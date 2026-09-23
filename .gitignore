@@ -1,0 +1,10 @@
+# Reportes con datos personales: NUNCA se suben al repositorio
+*.xls
+*.xlsx
+*.csv
+
+# Archivos del sistema y del editor
+.DS_Store
+Thumbs.db
+.vscode/
+node_modules/
