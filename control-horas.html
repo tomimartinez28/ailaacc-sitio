@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Control de horas – AILAACC</title>
+  <!-- Herramienta interna del personal: no indexar en buscadores -->
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#2a1206">
+  <link rel="icon" type="image/png" href="img/favicon-64.png">
+  <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/sitio.css">
+  <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body class="tool">
+  <header class="site">
+    <nav class="nav">
+      <a class="brand" href="index.html" aria-label="AILAACC — volver al sitio">
+        <img src="img/logo-ailaacc.png" width="1000" height="1228" alt="">
+        <span class="brand-text"><b>AILAACC</b><span>Herramientas del personal</span></span>
+      </a>
+      <a class="btn btn-ghost btn-sm nav-back" href="index.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+        Volver al sitio
+      </a>
+    </nav>
+  </header>
+
+  <section class="tool-hero">
+    <div class="wrap">
+      <p class="eyebrow">Registro dactilar · Uso interno</p>
+      <h1>Control de horas</h1>
+      <p class="bajada">
+        Subí los reportes del registro dactilar y descargá un Excel con las entradas,
+        salidas y horas de cada persona, día por día. Los archivos se procesan en tu
+        computadora y no se envían a ningún servidor.
+      </p>
+    </div>
+  </section>
+
+  <main class="tool-main">
+    <div class="wrap">
+      <div class="tool-card">
+        <label class="zona" id="zona">
+          <input type="file" id="archivos" accept=".xls,.xlsx" multiple>
+          <span class="zona-ico" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4M7 9l5-5 5 5"/><path d="M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3"/></svg>
+          </span>
+          <strong>Elegí o arrastrá los reportes</strong>
+          <span class="zona-desc">ANVIZ / CrossChex (listado de registros) o reporte con hoja "Logs". Podés subir varios a la vez.</span>
+          <span class="zona-btn" aria-hidden="true">Elegir archivos</span>
+        </label>
+
+        <ul id="lista" aria-live="polite"></ul>
+      </div>
+
+      <div class="nota">
+        <p class="nota-titulo">Cómo leer el Excel</p>
+        <p><span class="muestra muestra-impar"></span>Días con marcas impares: quedan en rosa y dicen COMPLETAR. Al escribir la hora que falta en el Excel, las horas se recalculan y el color desaparece.</p>
+        <p><span class="muestra muestra-dup"></span>Marcas a menos de 5 minutos de la anterior: se muestran en naranja en la columna "Duplicadas (borrar)" y no se suman.</p>
+        <p class="nota-priv">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
+          Todo el procesamiento ocurre en este navegador: ningún archivo sale de tu computadora.
+        </p>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <div class="foot-bottom">
+        <span>© A.I.L.A.A.C.C. · U.E.G.P. N° 195 · Provincia del Chaco</span>
+        <a class="foot-staff" href="index.html">← Volver al sitio</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Librerías externas guardadas localmente (crean las variables globales XLSX y ExcelJS) -->
+  <script src="vendor/xlsx.full.min.js"></script>
+  <script src="vendor/exceljs.min.js"></script>
+
+  <!-- Código propio: módulos ES -->
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

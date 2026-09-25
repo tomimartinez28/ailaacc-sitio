@@ -1,39 +1,637 @@
 <!doctype html>
-<html lang="es">
+<html lang="es-AR">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Control de horas – Registro dactilar</title>
-  <link rel="stylesheet" href="css/estilos.css">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>AILAACC Chaco</title>
+<meta name="description" content="A.I.L.A.A.C.C. U.E.G.P. N° 195 — Centro Educativo Terapéutico, Estimulación Temprana, Apoyo a la Integración Escolar, Transporte y Diagnóstico en 6 sedes de la provincia del Chaco.">
+<meta name="theme-color" content="#2a1206">
+<link rel="icon" type="image/png" href="img/favicon-64.png">
+<link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+<!-- Vista previa al compartir el link (WhatsApp, Facebook, etc.). TODO: agregar og:url y og:image cuando haya dominio e imagen reales. -->
+<meta property="og:type" content="website">
+<meta property="og:locale" content="es_AR">
+<meta property="og:site_name" content="A.I.L.A.A.C.C.">
+<meta property="og:title" content="A.I.L.A.A.C.C. — U.E.G.P. N° 195 · Chaco">
+<meta property="og:description" content="Educación terapéutica, integración escolar, estimulación temprana, transporte y diagnóstico en seis sedes del Chaco.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="css/sitio.css">
 </head>
 <body>
-  <main>
-    <h1>Control de horas</h1>
-    <p class="bajada">
-      Subí los reportes del registro dactilar y descargá un Excel con las entradas,
-      salidas y horas de cada persona, día por día. Los archivos se procesan en tu
-      computadora y no se envían a ningún servidor.
-    </p>
 
-    <label class="zona" id="zona">
-      <input type="file" id="archivos" accept=".xls,.xlsx" multiple>
-      <strong>Elegí o arrastrá los reportes</strong>
-      <span>ANVIZ / CrossChex (listado de registros) o reporte con hoja "Logs". Podés subir varios a la vez.</span>
-    </label>
+<!-- ============================================================ HEADER ============================================================ -->
+<header class="site">
+  <nav class="nav">
+    <a class="brand" href="#inicio" aria-label="AILAACC — inicio">
+      <img src="img/logo-ailaacc.png" width="1000" height="1228" alt="">
+      <span class="brand-text"><b>AILAACC</b><span>U.E.G.P. N° 195 · CHACO</span></span>
+    </a>
 
-    <ul id="lista" aria-live="polite"></ul>
-
-    <div class="nota">
-      <p><span class="muestra muestra-impar"></span>Días con marcas impares: quedan en rosa y dicen COMPLETAR. Al escribir la hora que falta en el Excel, las horas se recalculan y el color desaparece.</p>
-      <p><span class="muestra muestra-dup"></span>Marcas a menos de 5 minutos de la anterior: se muestran en naranja en la columna "Duplicadas (borrar)" y no se suman.</p>
+    <div class="nav-links" id="nav-links">
+      <a href="#inicio">Inicio</a>
+      <a href="#nosotros">Sobre nosotros</a>
+      <a href="#servicios">Servicios</a>
+      <a href="#sedes">Sedes</a>
+      <a href="#contacto">Contacto</a>
     </div>
-  </main>
 
-  <!-- Librerías externas guardadas localmente (crean las variables globales XLSX y ExcelJS) -->
-  <script src="vendor/xlsx.full.min.js"></script>
-  <script src="vendor/exceljs.min.js"></script>
+    <div class="nav-cta">
+      <a class="btn btn-white btn-sm" href="#contacto">Consultar</a>
+      <button class="nav-burger" id="burger" aria-label="Abrir menú" aria-expanded="false" aria-controls="mobile-panel">
+        <svg id="burger-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      </button>
+    </div>
+  </nav>
 
-  <!-- Código propio: módulos ES -->
-  <script type="module" src="js/app.js"></script>
+  <div class="mobile-panel" id="mobile-panel">
+    <a href="#inicio">Inicio</a>
+    <a href="#nosotros">Sobre nosotros</a>
+    <a href="#servicios">Servicios</a>
+    <a href="#sedes">Sedes</a>
+    <a href="#contacto">Contacto</a>
+    <a class="btn btn-primary" href="#contacto">Consultar ahora</a>
+  </div>
+</header>
+
+<main>
+
+<!-- ============================================================ HERO / INICIO ============================================================ -->
+<section class="hero" id="inicio">
+  <div class="wrap hero-inner">
+    <p class="eyebrow">Institución de gestión privada · Chaco, Argentina</p>
+    <h1>Acompañamos a las personas con discapacidad, <span class="grad">en cada etapa.</span></h1>
+    <p class="lede">A.I.L.A.A.C.C. (U.E.G.P. N° 195) brinda educación terapéutica, integración escolar, estimulación temprana, transporte adaptado y diagnóstico interdisciplinario, con equipos presentes en seis localidades del Chaco.</p>
+    <div class="hero-actions">
+      <a class="btn btn-white" href="#contacto">Quiero información <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      <a class="btn btn-ghost" href="#sedes">Ver sedes en el Chaco</a>
+    </div>
+    <p class="hero-trust">
+      <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"/></svg><b>6 sedes</b> en la provincia</span>
+      <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"/></svg><b>5 servicios</b> especializados</span>
+      <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"/></svg><b>U.E.G.P. N° 195</b> · Chaco</span>
+    </p>
+  </div>
+
+  <div class="wrap">
+    <div class="hero-cards">
+      <div class="hcard hcard-logo">
+        <img src="img/logo-ailaacc.png" width="1000" height="1228" alt="Logo de A.I.L.A.A.C.C.">
+        <div><b>A.I.L.A.A.C.C.</b><span>Equipo interdisciplinario en seis sedes</span></div>
+      </div>
+      <a class="hcard tone-orange" href="#servicios">
+        <span class="ico"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 12c6-4 12-4 16 0 4-4 10-4 16 0v24c-6-4-12-4-16 0-4-4-10-4-16 0z"/><path d="M24 12v24"/></svg></span>
+        <h3>Centro Educativo Terapéutico</h3>
+        <p>Propuesta pedagógica y terapéutica integrada.</p>
+        <span class="more">Ver servicio →</span>
+      </a>
+      <a class="hcard tone-green" href="#servicios">
+        <span class="ico"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="17" cy="16" r="6"/><path d="M6 40c0-7 5-12 11-12s11 5 11 12"/><circle cx="34" cy="14" r="4.5"/><path d="M28 40c0-5.5 3.5-9.5 9-9.5"/></svg></span>
+        <h3>Integración Escolar</h3>
+        <p>Acompañamiento del alumno en la escuela común.</p>
+        <span class="more">Ver servicio →</span>
+      </a>
+      <a class="hcard tone-yellow" href="#servicios">
+        <span class="ico"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M24 6c3 4 3 8 0 11-3-3-3-7 0-11z"/><path d="M12 44c0-9 5-16 12-16s12 7 12 16"/><path d="M24 28v16"/></svg></span>
+        <h3>Estimulación Temprana</h3>
+        <p>Abordaje oportuno en la primera infancia.</p>
+        <span class="more">Ver servicio →</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ SOBRE NOSOTROS ============================================================ -->
+<section id="nosotros">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Sobre nosotros</p>
+      <h2>Un equipo interdisciplinario al servicio de cada trayectoria.</h2>
+    </div>
+
+    <div class="about-grid">
+      <div class="about-copy">
+        <p class="lede">A.I.L.A.A.C.C. es una institución educativa que trabaja junto a personas con discapacidad y sus familias, articulando abordajes terapéuticos, educativos y comunitarios a lo largo de toda la provincia del Chaco.</p>
+        <p>Nuestro equipo está integrado por profesionales de la educación especial, psicología, fonoaudiología, psicopedagogía y terapia ocupacional, que diseñan planes de trabajo individuales según la etapa y las necesidades de cada persona.</p>
+        <p>La sede central funciona en Sáenz Peña, y desde allí coordinamos el trabajo con los equipos de Villa Ángela, Quitilipi, Tres Isletas, Las Breñas y Charata.</p>
+
+        <div class="id-card">
+          <div class="row"><span>Denominación</span><span>A.I.L.A.A.C.C.</span></div>
+          <div class="row"><span>Registro</span><span>U.E.G.P. N&deg; 195</span></div>
+          <div class="row"><span>Jurisdicción</span><span>Provincia del Chaco</span></div>
+          <div class="row"><span>Sede central</span><span>Sáenz Peña</span></div>
+          <div class="row"><span>Sedes en Chaco</span><span>6 localidades</span></div>
+        </div>
+      </div>
+
+      <div class="values">
+        <div class="value tone-orange">
+          <h4>Trabajo interdisciplinario</h4>
+          <p>Cada persona es acompañada por un equipo que combina distintas miradas profesionales, no un abordaje aislado.</p>
+        </div>
+        <div class="value tone-green">
+          <h4>Cercanía territorial</h4>
+          <p>Presencia en seis localidades del Chaco para que las familias no tengan que trasladarse largas distancias.</p>
+        </div>
+        <div class="value tone-yellow">
+          <h4>Acompañamiento a las familias</h4>
+          <p>Informamos y sostenemos a la familia en cada etapa del proceso, como parte activa del abordaje.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ SERVICIOS ============================================================ -->
+<section id="servicios" class="wash">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Nuestros servicios</p>
+      <h2>Cinco áreas de trabajo, un mismo acompañamiento.</h2>
+      <p class="lede">Desde el diagnóstico inicial hasta el sostén cotidiano en la escuela y el traslado a cada sede.</p>
+    </div>
+
+    <div class="serv-grid">
+
+      <div class="serv-card tone-orange">
+        <svg class="icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M8 12c6-4 12-4 16 0 4-4 10-4 16 0v24c-6-4-12-4-16 0-4-4-10-4-16 0z"/>
+          <path d="M24 12v24"/>
+        </svg>
+        <span class="tag">01 · CET</span>
+        <h3>Centro Educativo Terapéutico</h3>
+        <p>Propuesta pedagógica y terapéutica integrada, con currícula adaptada a las posibilidades de cada estudiante.</p>
+      </div>
+
+      <div class="serv-card tone-green">
+        <svg class="icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="17" cy="16" r="6"/><path d="M6 40c0-7 5-12 11-12s11 5 11 12"/>
+          <circle cx="34" cy="14" r="4.5"/><path d="M28 40c0-5.5 3.5-9.5 9-9.5"/>
+        </svg>
+        <span class="tag">02 · SAIE</span>
+        <h3>Apoyo a la Integración Escolar</h3>
+        <p>Acompañamiento del alumno integrado en la escuela común, en articulación con docentes y equipo directivo.</p>
+      </div>
+
+      <div class="serv-card tone-yellow">
+        <svg class="icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M24 6c3 4 3 8 0 11-3-3-3-7 0-11z"/>
+          <path d="M12 44c0-9 5-16 12-16s12 7 12 16"/>
+          <path d="M24 28v16"/>
+        </svg>
+        <span class="tag">03 · Temprana</span>
+        <h3>Estimulación Temprana</h3>
+        <p>Detección y abordaje oportuno del desarrollo en la primera infancia, previo al ingreso escolar.</p>
+      </div>
+
+      <div class="serv-card tone-orange">
+        <svg class="icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M6 30V17a3 3 0 0 1 3-3h20a3 3 0 0 1 3 3v13"/>
+          <path d="M32 22h7l3 6v5H6"/>
+          <circle cx="14" cy="34" r="3.5"/><circle cx="35" cy="34" r="3.5"/>
+        </svg>
+        <span class="tag">04 · Transporte</span>
+        <h3>Servicio de Transporte</h3>
+        <p>Traslado adaptado desde y hacia cada sede, facilitando el acceso cotidiano a los servicios.</p>
+      </div>
+
+      <div class="serv-card tone-green">
+        <svg class="icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="12" y="7" width="20" height="6" rx="1.5"/>
+          <path d="M12 10H9a3 3 0 0 0-3 3v25a3 3 0 0 0 3 3h26a3 3 0 0 0 3-3V13a3 3 0 0 0-3-3h-3"/>
+          <path d="M15 26l5 5 10-11"/>
+        </svg>
+        <span class="tag">05 · Diagnóstico</span>
+        <h3>Departamento de Diagnóstico</h3>
+        <p>Evaluación interdisciplinaria que orienta el diagnóstico y define el plan de abordaje más adecuado.</p>
+      </div>
+
+      <div class="serv-card serv-cta">
+        <h3>¿No sabés qué servicio necesitás?</h3>
+        <p>Contanos la situación y te orientamos hacia el abordaje adecuado.</p>
+        <a class="btn btn-white btn-sm" href="#contacto" data-pick-motivo="Otra consulta">Escribinos</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ SEDES ============================================================ -->
+<section id="sedes">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Sedes en el Chaco</p>
+      <h2>Presentes en seis localidades de la provincia.</h2>
+      <p class="lede">Elegí una sede para ver su dirección, teléfono y horario de atención. La sede central coordina el trabajo institucional desde Sáenz Peña.</p>
+    </div>
+
+    <div class="sedes-layout">
+      <div class="map-card">
+        <svg viewBox="0 0 340 320" role="group" aria-label="Mapa esquemático de las sedes en el centro-sur del Chaco">
+          <rect x="1" y="1" width="338" height="318" rx="4" fill="var(--bg-soft)"/>
+          <!-- Contexto: silueta aproximada de la provincia con el área ampliada -->
+          <g aria-hidden="true">
+            <polygon points="27.3,12.9 46,25.6 64.7,37.5 81.7,49.4 93.6,61.3 90.2,69.8 80,80 37.5,80 30.7,69.8 23.9,51.1 12,39.2 20.5,22.2" fill="var(--surface)" stroke="var(--line)" stroke-width="1"/>
+            <rect x="41.8" y="47.7" width="28.9" height="28.9" fill="none" stroke="var(--orange)" stroke-width="1.2"/>
+            <text class="map-inset-label" x="52" y="94" text-anchor="middle">CHACO</text>
+            <text class="map-compass" x="318" y="24" text-anchor="middle">N</text>
+            <path d="M318 28v14M314 32l4-4 4 4" stroke="var(--ink-soft)" stroke-width="1.2" fill="none"/>
+          </g>
+          <g aria-hidden="true"><line class="map-link" x1="207.6" y1="140.4" x2="209.2" y2="68.4"/><line class="map-link" x1="207.6" y1="140.4" x2="242.8" y2="153.2"/><line class="map-link" x1="207.6" y1="140.4" x2="105.2" y2="188.4"/><line class="map-link" x1="207.6" y1="140.4" x2="87.6" y2="207.6"/><line class="map-link" x1="207.6" y1="140.4" x2="164.4" y2="265.2"/></g>
+          <g class="map-pin" data-sede="tres-isletas" tabindex="0" role="button" aria-label="Ver sede Tres Isletas">
+            <circle class="halo" cx="209.2" cy="68.4" r="14"/>
+            <circle class="dot" cx="209.2" cy="68.4" r="7" fill="var(--yellow)"/>
+            <text x="221" y="72" text-anchor="start">Tres Isletas</text>
+          </g>
+          <g class="map-pin" data-sede="saenz-pena" tabindex="0" role="button" aria-label="Ver sede Sáenz Peña, casa central">
+            <circle class="halo" cx="207.6" cy="140.4" r="14"/>
+            <circle class="dot" cx="207.6" cy="140.4" r="9" fill="var(--orange)"/>
+            <text x="195" y="136" text-anchor="end">Sáenz Peña</text>
+          </g>
+          <g class="map-pin" data-sede="quitilipi" tabindex="0" role="button" aria-label="Ver sede Quitilipi">
+            <circle class="halo" cx="242.8" cy="153.2" r="14"/>
+            <circle class="dot" cx="242.8" cy="153.2" r="7" fill="var(--yellow)"/>
+            <text x="254" y="157" text-anchor="start">Quitilipi</text>
+          </g>
+          <g class="map-pin" data-sede="las-brenas" tabindex="0" role="button" aria-label="Ver sede Las Breñas">
+            <circle class="halo" cx="105.2" cy="188.4" r="14"/>
+            <circle class="dot" cx="105.2" cy="188.4" r="7" fill="var(--yellow)"/>
+            <text x="117" y="186" text-anchor="start">Las Breñas</text>
+          </g>
+          <g class="map-pin" data-sede="charata" tabindex="0" role="button" aria-label="Ver sede Charata">
+            <circle class="halo" cx="87.6" cy="207.6" r="14"/>
+            <circle class="dot" cx="87.6" cy="207.6" r="7" fill="var(--yellow)"/>
+            <text x="76" y="212" text-anchor="end">Charata</text>
+          </g>
+          <g class="map-pin" data-sede="villa-angela" tabindex="0" role="button" aria-label="Ver sede Villa Ángela">
+            <circle class="halo" cx="164.4" cy="265.2" r="14"/>
+            <circle class="dot" cx="164.4" cy="265.2" r="7" fill="var(--yellow)"/>
+            <text x="176" y="269" text-anchor="start">Villa Ángela</text>
+          </g>
+        </svg>
+        <p class="map-caption">Posición relativa real de cada sede · líneas: coordinación desde casa central</p>
+      </div>
+
+      <div class="sede-list" id="sede-list">
+
+        <div class="sede-item active" data-sede="saenz-pena">
+          <h3 class="sede-h"><button type="button" class="sede-head" id="sede-h-saenz-pena" aria-expanded="true" aria-controls="sede-b-saenz-pena">
+            <span class="sede-head-l"><span class="num">01</span><span class="sede-name">Sáenz Peña</span></span>
+            <span class="sede-head-r"><span class="sede-badge">Casa central</span><svg class="sede-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></span>
+          </button></h3>
+          <div class="sede-body" id="sede-b-saenz-pena" role="region" aria-labelledby="sede-h-saenz-pena"><div class="sede-body-inner">
+            <!-- TODO: dirección y teléfono reales de la sede -->
+            <div class="sede-line"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 21s-7-6.5-7-12a7 7 0 0 1 14 0c0 5.5-7 12-7 12z"/><circle cx="12" cy="9" r="2.5"/></svg><span>Dirección a confirmar — Presidencia Roque Sáenz Peña, Chaco</span></div>
+            <div class="sede-line"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3.1-8.6A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.7a2 2 0 0 1-.5 2.1L7.9 9.9a16 16 0 0 0 6 6l1.4-1.4a2 2 0 0 1 2.1-.5c.9.3 1.8.5 2.7.6a2 2 0 0 1 1.9 2z"/></svg><span>(3644) 42-0000 · WhatsApp disponible</span></div>
+            <div class="sede-line"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg><span>Lunes a viernes, 8 a 17 hs</span></div>
+            <a class="btn btn-primary btn-sm" href="#contacto" data-pick-sede="Sáenz Peña (casa central)">Consultar por esta sede</a>
+          </div></div>
+        </div>
+
+        <div class="sede-item" data-sede="villa-angela">
+          <h3 class="sede-h"><button type="button" class="sede-head" id="sede-h-villa-angela" aria-expanded="false" aria-controls="sede-b-villa-angela">
+            <span class="sede-head-l"><span class="num">02</span><span class="sede-name">Villa Ángela</span></span>
+            <span class="sede-head-r"><svg class="sede-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></span>
+          </button></h3>
+          <div class="sede-body" id="sede-b-villa-angela" role="region" aria-labelledby="sede-h-villa-angela"><div class="sede-body-inner">
+            <!-- TODO: dirección y teléfono reales de la sede -->
+            <div class="sede-line"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 21s-7-6.5-7-12a7 7 0 0 1 14 0c0 5.5-7 12-7 12z"/><circle cx="12" cy="9" r="2.5"/></svg><span>Dirección a confirmar — Villa Ángela, Chaco</span></div>
+            <div class="sede-line"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3.1-8.6A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.7a2 2 0 0 1-.5 2.1L7.9 9.9a16 16 0 0 0 6 6l1.4-1.4a2 2 0 0 1 2.1-.5c.9.3 1.8.5 2.7.6a2 2 0 0 1 1.9 2z"/></svg><span>(3735) 42-0000 · WhatsApp disponible</span></div>
+            <div class="sede-line"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg><span>Lunes a viernes, 8 a 17 hs</span></div>
+            <a class="btn btn-primary btn-sm" href="#contacto" data-pick-sede="Villa Ángela">Consultar por esta sede</a>
+          </div></div>
+        </div>
+
+        <div class="sede-item" data-sede="quitilipi">
+          <h3 class="sede-h"><button type="button" class="sede-head" id="sede-h-quitilipi" aria-expanded="false" aria-controls="sede-b-quitilipi">
+            <span class="sede-head-l"><span class="num">03</span><span class="sede-name">Quitilipi</span></span>
+            <span class="sede-head-r"><svg class="sede-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></span>
+          </button></h3>
+          <div class="sede-body" id="sede-b-quitilipi" role="region" aria-labelledby="sede-h-quitilipi"><div class="sede-body-inner">
+            <!-- TODO: dirección y teléfono reales de la sede -->
+            <div class="sede-line"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 21s-7-6.5-7-12a7 7 0 0 1 14 0c0 5.5-7 12-7 12z"/><circle cx="12" cy="9" r="2.5"/></svg><span>Dirección a confirmar — Quitilipi, Chaco</span></div>
+            <div class="sede-line"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3.1-8.6A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.7a2 2 0 0 1-.5 2.1L7.9 9.9a16 16 0 0 0 6 6l1.4-1.4a2 2 0 0 1 2.1-.5c.9.3 1.8.5 2.7.6a2 2 0 0 1 1.9 2z"/></svg><span>(3735) 47-0000 · WhatsApp disponible</span></div>
+            <div class="sede-line"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg><span>Lunes a viernes, 8 a 17 hs</span></div>
+            <a class="btn btn-primary btn-sm" href="#contacto" data-pick-sede="Quitilipi">Consultar por esta sede</a>
+          </div></div>
+        </div>
+
+        <div class="sede-item" data-sede="tres-isletas">
+          <h3 class="sede-h"><button type="button" class="sede-head" id="sede-h-tres-isletas" aria-expanded="false" aria-controls="sede-b-tres-isletas">
+            <span class="sede-head-l"><span class="num">04</span><span class="sede-name">Tres Isletas</span></span>
+            <span class="sede-head-r"><svg class="sede-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></span>
+          </button></h3>
+          <div class="sede-body" id="sede-b-tres-isletas" role="region" aria-labelledby="sede-h-tres-isletas"><div class="sede-body-inner">
+            <!-- TODO: dirección y teléfono reales de la sede -->
+            <div class="sede-line"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 21s-7-6.5-7-12a7 7 0 0 1 14 0c0 5.5-7 12-7 12z"/><circle cx="12" cy="9" r="2.5"/></svg><span>Dirección a confirmar — Tres Isletas, Chaco</span></div>
+            <div class="sede-line"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3.1-8.6A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.7a2 2 0 0 1-.5 2.1L7.9 9.9a16 16 0 0 0 6 6l1.4-1.4a2 2 0 0 1 2.1-.5c.9.3 1.8.5 2.7.6a2 2 0 0 1 1.9 2z"/></svg><span>(3732) 42-0000 · WhatsApp disponible</span></div>
+            <div class="sede-line"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg><span>Lunes a viernes, 8 a 17 hs</span></div>
+            <a class="btn btn-primary btn-sm" href="#contacto" data-pick-sede="Tres Isletas">Consultar por esta sede</a>
+          </div></div>
+        </div>
+
+        <div class="sede-item" data-sede="las-brenas">
+          <h3 class="sede-h"><button type="button" class="sede-head" id="sede-h-las-brenas" aria-expanded="false" aria-controls="sede-b-las-brenas">
+            <span class="sede-head-l"><span class="num">05</span><span class="sede-name">Las Breñas</span></span>
+            <span class="sede-head-r"><svg class="sede-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></span>
+          </button></h3>
+          <div class="sede-body" id="sede-b-las-brenas" role="region" aria-labelledby="sede-h-las-brenas"><div class="sede-body-inner">
+            <!-- TODO: dirección y teléfono reales de la sede -->
+            <div class="sede-line"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 21s-7-6.5-7-12a7 7 0 0 1 14 0c0 5.5-7 12-7 12z"/><circle cx="12" cy="9" r="2.5"/></svg><span>Dirección a confirmar — Las Breñas, Chaco</span></div>
+            <div class="sede-line"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3.1-8.6A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.7a2 2 0 0 1-.5 2.1L7.9 9.9a16 16 0 0 0 6 6l1.4-1.4a2 2 0 0 1 2.1-.5c.9.3 1.8.5 2.7.6a2 2 0 0 1 1.9 2z"/></svg><span>(3733) 42-0000 · WhatsApp disponible</span></div>
+            <div class="sede-line"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg><span>Lunes a viernes, 8 a 17 hs</span></div>
+            <a class="btn btn-primary btn-sm" href="#contacto" data-pick-sede="Las Breñas">Consultar por esta sede</a>
+          </div></div>
+        </div>
+
+        <div class="sede-item" data-sede="charata">
+          <h3 class="sede-h"><button type="button" class="sede-head" id="sede-h-charata" aria-expanded="false" aria-controls="sede-b-charata">
+            <span class="sede-head-l"><span class="num">06</span><span class="sede-name">Charata</span></span>
+            <span class="sede-head-r"><svg class="sede-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></span>
+          </button></h3>
+          <div class="sede-body" id="sede-b-charata" role="region" aria-labelledby="sede-h-charata"><div class="sede-body-inner">
+            <!-- TODO: dirección y teléfono reales de la sede -->
+            <div class="sede-line"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 21s-7-6.5-7-12a7 7 0 0 1 14 0c0 5.5-7 12-7 12z"/><circle cx="12" cy="9" r="2.5"/></svg><span>Dirección a confirmar — Charata, Chaco</span></div>
+            <div class="sede-line"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3.1-8.6A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.7a2 2 0 0 1-.5 2.1L7.9 9.9a16 16 0 0 0 6 6l1.4-1.4a2 2 0 0 1 2.1-.5c.9.3 1.8.5 2.7.6a2 2 0 0 1 1.9 2z"/></svg><span>(3731) 42-0000 · WhatsApp disponible</span></div>
+            <div class="sede-line"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg><span>Lunes a viernes, 8 a 17 hs</span></div>
+            <a class="btn btn-primary btn-sm" href="#contacto" data-pick-sede="Charata">Consultar por esta sede</a>
+          </div></div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ TRABAJÁ CON NOSOTROS ============================================================ -->
+<section class="section-tight">
+  <div class="wrap">
+    <div class="work-with-us">
+      <div>
+        <h3>¿Querés formar parte del equipo?</h3>
+        <p>Sumamos profesionales de educación especial, psicología, fonoaudiología, psicopedagogía, terapia ocupacional y transporte en nuestras seis sedes.</p>
+      </div>
+      <a class="btn btn-white" href="#contacto" data-pick-motivo="Quiero trabajar en AILAACC (envío de CV)">Enviar CV / postularme</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ CONTACTO ============================================================ -->
+<section id="contacto">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Contacto</p>
+      <h2>Dejanos tus datos y te contactamos.</h2>
+      <p class="lede">Completá el formulario y lo enviamos directo por WhatsApp, o escribinos por los medios de contacto institucionales.</p>
+    </div>
+
+    <div class="contact-grid">
+      <form class="contact-form" id="contact-form">
+        <div class="field-row">
+          <div class="field">
+            <label for="nombre">Nombre y apellido</label>
+            <input id="nombre" name="nombre" type="text" required placeholder="Ej: María Gómez">
+          </div>
+          <div class="field">
+            <label for="telefono">Teléfono / WhatsApp</label>
+            <input id="telefono" name="telefono" type="tel" required placeholder="Ej: 3644 000000">
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="sede">Sede de interés</label>
+            <select id="sede" name="sede">
+              <option value="Sáenz Peña (casa central)">Sáenz Peña (casa central)</option>
+              <option value="Villa Ángela">Villa Ángela</option>
+              <option value="Quitilipi">Quitilipi</option>
+              <option value="Tres Isletas">Tres Isletas</option>
+              <option value="Las Breñas">Las Breñas</option>
+              <option value="Charata">Charata</option>
+              <option value="No sé / me orientan">No sé / me orientan</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="motivo">Motivo de la consulta</label>
+            <select id="motivo" name="motivo">
+              <option value="Centro Educativo Terapéutico">Centro Educativo Terapéutico</option>
+              <option value="Apoyo a la Integración Escolar">Apoyo a la Integración Escolar</option>
+              <option value="Estimulación Temprana">Estimulación Temprana</option>
+              <option value="Servicio de Transporte">Servicio de Transporte</option>
+              <option value="Departamento de Diagnóstico">Departamento de Diagnóstico</option>
+              <option value="Quiero trabajar en AILAACC (envío de CV)">Quiero trabajar en AILAACC</option>
+              <option value="Otra consulta">Otra consulta</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="mensaje">Mensaje (opcional)</label>
+          <textarea id="mensaje" name="mensaje" rows="3" placeholder="Contanos brevemente la situación o consulta"></textarea>
+        </div>
+
+        <p class="form-note">Al enviar, se abrirá WhatsApp con tu mensaje ya redactado para confirmar el envío.</p>
+
+        <div class="form-foot">
+          <button type="submit" class="btn btn-wa">
+            <svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15L2 22l5.2-1.4A10 10 0 1 0 12 2zm5.8 14.2c-.2.7-1.4 1.3-2 1.4-.5.1-1.1.1-1.8-.1-.4-.1-1-.3-1.7-.6-3-1.3-4.9-4.3-5.1-4.5-.2-.2-1.2-1.6-1.2-3.1s.8-2.2 1.1-2.5c.3-.3.6-.4.8-.4h.6c.2 0 .5 0 .7.5.3.7.9 2.2 1 2.4.1.2.1.4 0 .6-.6 1.3-1.3 1.2-.8 2 1 1.7 1.9 2.3 3.4 3 .3.1.5.1.6-.1.2-.2.7-.8.9-1.1.2-.3.4-.2.7-.1.3.1 1.8.9 2.1 1 .3.2.5.2.6.3.1.2.1.9-.1 1.6z"/></svg>
+            Enviar por WhatsApp
+          </button>
+          <span id="form-status" role="status"></span>
+        </div>
+      </form>
+
+      <aside class="contact-side">
+        <div class="side-block">
+          <h4>Casa central — Sáenz Peña</h4>
+          <div class="side-line"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-6.5-7-12a7 7 0 0 1 14 0c0 5.5-7 12-7 12z"/><circle cx="12" cy="9" r="2.5"/></svg><span>Dirección a confirmar, Presidencia Roque Sáenz Peña, Chaco</span></div>
+          <div class="side-line"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3.1-8.6A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.7a2 2 0 0 1-.5 2.1L7.9 9.9a16 16 0 0 0 6 6l1.4-1.4a2 2 0 0 1 2.1-.5c.9.3 1.8.5 2.7.6a2 2 0 0 1 1.9 2z"/></svg><span><a href="tel:+543644420000">(3644) 42-0000</a></span></div>
+          <div class="side-line"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg><span><!-- TODO: email institucional real --><a href="mailto:contacto@ailaacc.org.ar">contacto@ailaacc.org.ar</a></span></div>
+        </div>
+        <div class="side-block">
+          <h4>Horario de atención</h4>
+          <div class="side-line"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg><span>Lunes a viernes, 8 a 17 hs, en todas las sedes.</span></div>
+        </div>
+        <div class="side-block">
+          <h4>Redes</h4>
+          <div class="side-line"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="4"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="0.6" fill="currentColor"/></svg><span><!-- TODO: confirmar usuario y enlazar a https://www.instagram.com/USUARIO/ -->@ailaacc.chaco en Instagram (a confirmar)</span></div>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ============================================================ FOOTER ============================================================ -->
+<footer>
+  <div class="wrap">
+    <div class="foot-top">
+      <div class="foot-brand">
+        <img src="img/logo-ailaacc.png" width="1000" height="1228" alt="">
+        <b>A.I.L.A.A.C.C. — U.E.G.P. N&deg; 195</b>
+      </div>
+      <div class="foot-links">
+        <a href="#inicio">Inicio</a>
+        <a href="#nosotros">Sobre nosotros</a>
+        <a href="#servicios">Servicios</a>
+        <a href="#sedes">Sedes</a>
+        <a href="#contacto">Contacto</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© <span id="year"></span> A.I.L.A.A.C.C. · Provincia del Chaco, Argentina</span>
+      <span>Sáenz Peña · Villa Ángela · Quitilipi · Tres Isletas · Las Breñas · Charata</span>
+      <a class="foot-staff" href="control-horas.html">Acceso personal · Control de horas →</a>
+    </div>
+  </div>
+</footer>
+
+<button class="wa-float" id="wa-float" aria-label="Escribir por WhatsApp">
+  <svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15L2 22l5.2-1.4A10 10 0 1 0 12 2zm5.8 14.2c-.2.7-1.4 1.3-2 1.4-.5.1-1.1.1-1.8-.1-.4-.1-1-.3-1.7-.6-3-1.3-4.9-4.3-5.1-4.5-.2-.2-1.2-1.6-1.2-3.1s.8-2.2 1.1-2.5c.3-.3.6-.4.8-.4h.6c.2 0 .5 0 .7.5.3.7.9 2.2 1 2.4.1.2.1.4 0 .6-.6 1.3-1.3 1.2-.8 2 1 1.7 1.9 2.3 3.4 3 .3.1.5.1.6-.1.2-.2.7-.8.9-1.1.2-.3.4-.2.7-.1.3.1 1.8.9 2.1 1 .3.2.5.2.6.3.1.2.1.9-.1 1.6z"/></svg>
+</button>
+
+<script>
+(function(){
+  "use strict";
+
+  var WHATSAPP_NUMBER = "5493644000000"; // TODO: reemplazar por el número institucional real (código país 54 9 + código de área + número)
+
+  if(/0{6}$/.test(WHATSAPP_NUMBER)){
+    console.warn('AILAACC: WHATSAPP_NUMBER sigue siendo un placeholder. Reemplazalo antes de publicar.');
+  }
+
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  /* ---- mobile menu ---- */
+  var burger = document.getElementById('burger');
+  var burgerIcon = document.getElementById('burger-icon');
+  burger.addEventListener('click', function(){
+    var open = document.body.classList.toggle('menu-open');
+    burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+    burgerIcon.innerHTML = open
+      ? '<path d="M6 6l12 12M18 6L6 18"/>'
+      : '<path d="M3 6h18M3 12h18M3 18h18"/>';
+  });
+  document.querySelectorAll('.mobile-panel a').forEach(function(a){
+    a.addEventListener('click', function(){
+      document.body.classList.remove('menu-open');
+      burger.setAttribute('aria-expanded','false');
+      burgerIcon.innerHTML = '<path d="M3 6h18M3 12h18M3 18h18"/>';
+    });
+  });
+
+  /* ---- active nav link on scroll ---- */
+  var sections = ['inicio','nosotros','servicios','sedes','contacto'].map(function(id){
+    return document.getElementById(id);
+  });
+  var navA = document.querySelectorAll('.nav-links a');
+  if('IntersectionObserver' in window){
+    var obs = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if(entry.isIntersecting){
+          var id = entry.target.id;
+          navA.forEach(function(a){
+            a.classList.toggle('active', a.getAttribute('href') === '#' + id);
+          });
+        }
+      });
+    }, {rootMargin:'-45% 0px -50% 0px', threshold:0});
+    sections.forEach(function(s){ if(s) obs.observe(s); });
+  }
+
+  /* ---- sedes: map + accordion sync ---- */
+  var sedeItems = document.querySelectorAll('.sede-item');
+  var mapPins = document.querySelectorAll('.map-pin');
+
+  function selectSede(key){
+    sedeItems.forEach(function(item){
+      var on = item.dataset.sede === key;
+      item.classList.toggle('active', on);
+      item.querySelector('.sede-head').setAttribute('aria-expanded', on ? 'true' : 'false');
+    });
+    mapPins.forEach(function(pin){
+      pin.classList.toggle('active', pin.dataset.sede === key);
+    });
+  }
+
+  sedeItems.forEach(function(item){
+    item.querySelector('.sede-head').addEventListener('click', function(){
+      var isActive = item.classList.contains('active');
+      selectSede(isActive ? '__none__' : item.dataset.sede);
+    });
+  });
+
+  function pickFromMap(pin){
+    selectSede(pin.dataset.sede);
+    // en mobile el mapa queda arriba de la lista: llevar a la sede elegida
+    if(window.matchMedia('(max-width:900px)').matches){
+      var item = document.querySelector('.sede-item[data-sede="' + pin.dataset.sede + '"]');
+      if(item) item.scrollIntoView({behavior:'smooth', block:'nearest'});
+    }
+  }
+  mapPins.forEach(function(pin){
+    pin.addEventListener('click', function(){ pickFromMap(pin); });
+    pin.addEventListener('keydown', function(e){
+      if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); pickFromMap(pin); }
+    });
+  });
+
+  /* ---- CTAs que preseleccionan sede o motivo en el formulario ---- */
+  var sedeSelect = document.getElementById('sede');
+  var motivoSelect = document.getElementById('motivo');
+  document.querySelectorAll('[data-pick-sede]').forEach(function(a){
+    a.addEventListener('click', function(){ sedeSelect.value = a.dataset.pickSede; });
+  });
+  document.querySelectorAll('[data-pick-motivo]').forEach(function(a){
+    a.addEventListener('click', function(){ motivoSelect.value = a.dataset.pickMotivo; });
+  });
+
+  /* ---- contact form -> WhatsApp ---- */
+  var form = document.getElementById('contact-form');
+  var status = document.getElementById('form-status');
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    var nombre = form.nombre.value.trim();
+    var telefono = form.telefono.value.trim();
+    var sede = form.sede.value;
+    var motivo = form.motivo.value;
+    var mensaje = form.mensaje.value.trim();
+
+    form.nombre.setAttribute('aria-invalid', nombre ? 'false' : 'true');
+    form.telefono.setAttribute('aria-invalid', telefono ? 'false' : 'true');
+    if(!nombre || !telefono){
+      status.textContent = 'Completá nombre y teléfono para continuar.';
+      status.className = 'err';
+      (nombre ? form.telefono : form.nombre).focus();
+      return;
+    }
+
+    var lines = [
+      'Hola AILAACC, soy ' + nombre + '.',
+      'Sede de interés: ' + sede + '.',
+      'Motivo: ' + motivo + '.',
+      'Mi teléfono de contacto: ' + telefono + '.'
+    ];
+    if(mensaje) lines.push('Mensaje: ' + mensaje);
+
+    var text = encodeURIComponent(lines.join('\n'));
+    var url = 'https://wa.me/' + WHATSAPP_NUMBER + '?text=' + text;
+
+    status.textContent = 'Abriendo WhatsApp…';
+    status.className = 'ok';
+    window.open(url, '_blank', 'noopener');
+  });
+
+  document.getElementById('wa-float').addEventListener('click', function(){
+    var text = encodeURIComponent('Hola AILAACC, quisiera consultar por sus servicios.');
+    window.open('https://wa.me/' + WHATSAPP_NUMBER + '?text=' + text, '_blank', 'noopener');
+  });
+
+})();
+</script>
 </body>
 </html>
