@@ -2,9 +2,17 @@
 *.xls
 *.xlsx
 *.csv
+# (excepción: planillas ficticias usadas por los tests)
+!e2e/fixtures/*.xlsx
+!e2e/fixtures/*.xls
+
+# Dependencias y builds
+node_modules/
+dist/
+playwright-report/
+test-results/
 
 # Archivos del sistema y del editor
 .DS_Store
 Thumbs.db
 .vscode/
-node_modules/

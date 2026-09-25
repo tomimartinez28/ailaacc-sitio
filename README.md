@@ -1,34 +1,63 @@
 # Sitio AILAACC
 
-Sitio estático de A.I.L.A.A.C.C. (U.E.G.P. N° 195, Chaco) con dos páginas que comparten estética:
+Sitio de A.I.L.A.A.C.C. (U.E.G.P. N° 195, Chaco) hecho con **React + Vite + React Router**.
 
-| Página | Para quién | Qué hace |
+| Ruta | Para quién | Qué es |
 |---|---|---|
-| `index.html` | Familias y público | Landing institucional: servicios, sedes, contacto por WhatsApp |
-| `control-horas.html` | Personal (uso interno, `noindex`) | Procesa los reportes del registro dactilar |
+| `/` | Familias y público | Landing: servicios, sedes, contacto por WhatsApp |
+| `/herramientas` | Personal (no se indexa) | Listado de herramientas internas |
+| `/herramientas/control-horas` | Personal | Procesa los reportes del registro dactilar |
 
-## Control de horas
+`/control-horas.html` (dirección de la versión anterior) redirige a la herramienta.
 
-Procesa los reportes del registro dactilar (ANVIZ/CrossChex y formato con hoja "Logs")
-y genera un Excel con entradas, salidas y horas por persona y por día.
+## Uso
 
-Todo el procesamiento ocurre en el navegador: ningún archivo se envía a un servidor.
+    npm install
+    npm run dev        # desarrollo: http://localhost:5173/ailaacc-sitio/
+    npm run build      # genera dist/ (incluye 404.html para las rutas en GitHub Pages)
+    npm run preview    # sirve dist/ localmente
+
+## Tests
+
+    npm test           # unitarios y de componentes (Vitest)
+    npm run test:e2e   # end-to-end sobre el build, con Google Chrome (Playwright)
+
+Para comprobar que el Excel generado es idéntico al de la versión HTML anterior, servir esa versión
+(p. ej. un `git worktree` de la versión HTML con `python -m http.server 8801`) y correr:
+
+    BASELINE_URL=http://localhost:8801/ npm run test:e2e
+
+Los reportes de prueba de `e2e/fixtures/` tienen datos ficticios (`node e2e/fixtures/generar.mjs`).
 
 ## Estructura
 
-    index.html            landing
-    control-horas.html    herramienta
-    css/sitio.css         estilos compartidos (tokens de color, tipografía, header, footer)
-    css/estilos.css       estilos propios de la herramienta
-    js/                   lógica de la herramienta (app.js + motor/)
-    vendor/               SheetJS y ExcelJS (copias locales)
-    img/                  logo, favicon
+    src/
+      data/sitio.js            contenido del sitio: sedes, servicios, contacto, WhatsApp (datos a completar: TODO)
+      components/ui/           piezas reutilizables: Button, Icon, SectionHead, Brand
+      components/layout/       headers, footers, botón de WhatsApp, scroll a #anclas
+      layouts/                 SiteLayout (landing) y ToolsLayout (área del personal)
+      features/home/           secciones de la landing; contacto/ tiene el estado del formulario
+      pages/                   Home, listado de herramientas, página de una herramienta
+      tools/registro.js        registro de herramientas (se cargan de forma diferida)
+      tools/control-horas/     la herramienta: componentes, hook de estado y motor/ (lógica de Excel)
+      styles/                  sitio.css (tokens y componentes) y herramientas.css
+    e2e/                       tests end-to-end y reportes de prueba
 
-## Uso local
-    python -m http.server 8000
-Abrir http://localhost:8000 (la herramienta usa módulos ES y no funciona abriendo el archivo directo).
+## Agregar una herramienta
 
-## Ajustes
-- Herramienta — minutos para duplicados, colores del Excel y cantidad de columnas: `js/config.js`
-- Landing — número de WhatsApp: `WHATSAPP_NUMBER` en el script de `index.html`.
-  Los datos pendientes de confirmar están marcados con `TODO`.
+1. Crear `src/tools/<slug>/` con un componente por defecto (puede usar `ToolHero`).
+2. Sumar una entrada en `src/tools/registro.js`. Aparece sola en `/herramientas` y en `/herramientas/<slug>`,
+   y su código solo se descarga cuando alguien la abre.
+
+## Control de horas
+
+Procesa los reportes del registro dactilar (ANVIZ/CrossChex y formato con hoja "Logs") y genera un Excel
+con entradas, salidas y horas por persona y por día. Todo ocurre en el navegador: ningún archivo se envía
+a un servidor. Ajustes (minutos para duplicados, colores, columnas): `src/tools/control-horas/config.js`.
+
+## Publicación
+
+GitHub Pages con GitHub Actions (`.github/workflows/deploy.yml`): cada push a `main` corre lint, tests y build,
+y publica `dist/`. En el repo: Settings → Pages → Source: **GitHub Actions**.
+
+Nota: `.npmrc` usa `legacy-peer-deps` para evitar un error de npm 10.9 al resolver peers opcionales de Vitest.

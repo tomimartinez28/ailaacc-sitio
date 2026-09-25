@@ -1,0 +1,50 @@
+/* Estilos comunes del área de herramientas (uso interno).
+   Cada herramienta agrega los suyos en su propia carpeta. */
+
+/* ---------- Header ---------- */
+.nav-back { gap: 8px; }
+@media (max-width: 480px) {
+  .site-tools .brand-text span { display: none; }
+}
+
+/* ---------- Cabecera de la herramienta ---------- */
+.tool-hero {
+  color: var(--on-hero);
+  padding-block: clamp(48px, 7vw, 80px) clamp(96px, 12vw, 136px);
+  background:
+    radial-gradient(55% 60% at 90% 0%, rgba(236,199,25,.26), transparent 70%),
+    radial-gradient(45% 70% at 0% 100%, rgba(151,184,52,.2), transparent 70%),
+    linear-gradient(180deg, var(--hero-1) 0%, var(--hero-2) 60%, var(--hero-3) 100%);
+}
+.tool-hero .wrap { max-width: 860px; text-align: center; display: flex; flex-direction: column; align-items: center; }
+.tool-hero .eyebrow { background: rgba(255,255,255,.1); color: var(--on-hero); border: 1px solid var(--on-hero-line); }
+.tool-hero h1 {
+  color: var(--on-hero);
+  font-size: clamp(2.2rem, 5vw, 3.4rem);
+  letter-spacing: -.03em;
+  line-height: 1.05;
+}
+.bajada { color: var(--on-hero-soft); margin: 18px 0 0; max-width: 62ch; font-size: 1.08rem; }
+
+/* ---------- Contenido ---------- */
+.tool-main { padding-block: 0 clamp(56px, 8vw, 96px); }
+.tool-main .wrap { max-width: 860px; }
+
+
+/* ---------- Grilla de herramientas ---------- */
+.tools-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 300px)); justify-content: center; gap: 16px;
+  margin-top: calc(-1 * clamp(64px, 9vw, 96px)); position: relative; }
+.tools-grid .hcard { min-height: 210px; }
+.tool-soon { border: 2px dashed var(--line); border-radius: var(--r-lg); padding: 22px; color: var(--ink-soft);
+  display: flex; flex-direction: column; justify-content: center; gap: 6px; min-height: 210px; background: var(--bg-soft); }
+.tool-soon b { color: var(--ink); font-weight: 600; }
+.tool-loading { text-align: center; color: var(--ink-soft); padding: 48px 0; }
+
+/* El footer queda abajo aunque haya poco contenido */
+.tools-shell { min-height: 100vh; min-height: 100dvh; display: flex; flex-direction: column; }
+.tools-shell > main { flex: 1; }
+@media (max-width: 600px) { .tools-grid { grid-template-columns: 1fr; } }
+
+/* ---------- Footer compacto ---------- */
+.foot-compact { padding-block: 8px 24px; }
+
