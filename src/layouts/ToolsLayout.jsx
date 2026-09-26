@@ -1,6 +1,6 @@
 import { Outlet } from 'react-router';
 import { ToolsHeader } from '../components/layout/SiteHeader.jsx';
-import { CompactFooter } from '../components/layout/SiteFooter.jsx';
+import { CompactFooter } from '../components/layout/CompactFooter.jsx';
 import { useMetaTag } from '../hooks/useDocumentTitle.js';
 
 // Área de uso interno: no se indexa en buscadores.

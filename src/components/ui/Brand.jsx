@@ -1,6 +1,6 @@
 import { Link } from 'react-router';
 import { LOGO } from '../../lib/asset.js';
-import { INSTITUCION } from '../../data/sitio.js';
+import { INSTITUCION } from '../../data/institucion.js';
 
 // Logo + sigla. Con `to` navega con el router; con `href` es un ancla (ej. "#inicio").
 export function Brand({ subtitle, to, href, label }) {

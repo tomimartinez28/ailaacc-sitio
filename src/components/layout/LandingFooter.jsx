@@ -26,16 +26,3 @@ export function LandingFooter() {
     </footer>
   );
 }
-
-export function CompactFooter() {
-  return (
-    <footer className="foot-compact">
-      <div className="wrap">
-        <div className="foot-bottom">
-          <span>{`© ${INSTITUCION.nombre} · ${INSTITUCION.registro} · Provincia del Chaco`}</span>
-          <Link className="foot-staff" to="/">← Volver al sitio</Link>
-        </div>
-      </div>
-    </footer>
-  );
-}

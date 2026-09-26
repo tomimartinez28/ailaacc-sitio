@@ -476,3 +476,12 @@ footer{background:var(--foot);color:rgba(255,255,255,.65);padding-block:48px 28p
 @media (prefers-reduced-motion:reduce){
   *{transition-duration:.001ms!important;animation-duration:.001ms!important;}
 }
+
+/* ============ SITIO EN CONSTRUCCIÓN ============ */
+.en-construccion{display:flex;align-items:center;}
+.en-construccion .hero-inner{padding-block:24px;}
+.en-construccion-logo{height:clamp(96px,14vw,132px);width:auto;margin-bottom:28px;filter:drop-shadow(0 10px 24px rgba(0,0,0,.35));}
+.en-construccion .btn svg{width:18px;height:18px;}
+.en-construccion-redes a{display:inline-flex;align-items:center;gap:8px;color:var(--on-hero);text-decoration:none;font-weight:500;}
+.en-construccion-redes a:hover{text-decoration:underline;}
+.en-construccion-redes svg{color:var(--yellow);}

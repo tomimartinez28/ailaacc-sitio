@@ -44,17 +44,26 @@ export function LandingHeader({ secciones, subtitle }) {
   );
 }
 
-// Header de las herramientas: marca que vuelve al inicio + botón "Volver al sitio".
-export function ToolsHeader({ subtitle }) {
+// Header simple: marca que lleva al inicio + una acción opcional a la derecha.
+export function SimpleHeader({ subtitle, children }) {
   return (
     <header className="site site-tools">
       <nav className="nav">
-        <Brand to="/" subtitle={subtitle} label="AILAACC — volver al sitio" />
-        <Button variant="ghost" size="sm" to="/" className="nav-back">
-          <Icon name="volver" />
-          Volver al sitio
-        </Button>
+        <Brand to="/" subtitle={subtitle} label="AILAACC — inicio" />
+        {children}
       </nav>
     </header>
+  );
+}
+
+// Header de las herramientas: con botón "Volver al sitio".
+export function ToolsHeader({ subtitle }) {
+  return (
+    <SimpleHeader subtitle={subtitle}>
+      <Button variant="ghost" size="sm" to="/" className="nav-back">
+        <Icon name="volver" />
+        Volver al sitio
+      </Button>
+    </SimpleHeader>
   );
 }

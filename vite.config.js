@@ -5,13 +5,15 @@ import react from '@vitejs/plugin-react';
 
 // GitHub Pages no conoce las rutas del SPA: servimos el mismo index.html como 404.html
 // para que /herramientas/... funcione al entrar directo o al recargar.
-const spaFallback = () => ({
-  name: 'spa-fallback-404',
-  closeBundle() {
-    const dist = resolve(import.meta.dirname, 'dist');
-    copyFileSync(resolve(dist, 'index.html'), resolve(dist, '404.html'));
-  },
-});
+const spaFallback = () => {
+  let dist;
+  return {
+    name: 'spa-fallback-404',
+    apply: 'build',
+    configResolved(config) { dist = resolve(config.root, config.build.outDir); },
+    closeBundle() { copyFileSync(resolve(dist, 'index.html'), resolve(dist, '404.html')); },
+  };
+};
 
 export default defineConfig({
   // Se publica en https://tomimartinez28.github.io/ailaacc-sitio/
@@ -26,5 +28,6 @@ export default defineConfig({
     setupFiles: ['./src/test/setup.js'],
     include: ['src/**/*.test.{js,jsx}'],
     css: false,
+    env: { VITE_LANDING_PUBLICA: 'true' },
   },
 });

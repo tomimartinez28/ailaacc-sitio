@@ -1,6 +1,6 @@
 import { Outlet } from 'react-router';
 import { LandingHeader } from '../components/layout/SiteHeader.jsx';
-import { LandingFooter } from '../components/layout/SiteFooter.jsx';
+import { LandingFooter } from '../components/layout/LandingFooter.jsx';
 import { WhatsAppFloat } from '../components/layout/WhatsAppFloat.jsx';
 import { NAV_SECCIONES, INSTITUCION } from '../data/sitio.js';
 

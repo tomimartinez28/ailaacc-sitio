@@ -7,11 +7,12 @@ import { FORMULARIO_INICIAL, reducerContacto } from './contactoEstado.js';
 import { mensajeConsulta, urlWhatsApp } from '../../../lib/whatsapp.js';
 import { WHATSAPP_NUMBER } from '../../../data/sitio.js';
 
-const renderInicio = () => {
+const renderInicio = async () => {
   window.IntersectionObserver = class { observe() {} disconnect() {} };
   window.matchMedia = () => ({ matches: false });
   Element.prototype.scrollIntoView = vi.fn();
   render(<RouterProvider router={createMemoryRouter(rutas, { initialEntries: ['/'] })} />);
+  await screen.findByRole('heading', { level: 1, name: /Acompañamos/ });
 };
 
 describe('reducer del formulario', () => {
@@ -32,7 +33,7 @@ describe('mensaje de WhatsApp', () => {
 
 describe('landing', () => {
   it('"Consultar por esta sede" y "Enviar CV" preseleccionan el formulario', async () => {
-    renderInicio();
+    await renderInicio();
     const user = userEvent.setup();
     await user.click(screen.getByRole('button', { name: /^06\s*Charata/ }));
     const region = screen.getByRole('region', { name: /Charata/ });
@@ -44,7 +45,7 @@ describe('landing', () => {
   });
 
   it('el acordeón abre de a una sede y se sincroniza con el mapa', async () => {
-    renderInicio();
+    await renderInicio();
     const user = userEvent.setup();
     const saenz = screen.getByRole('button', { name: /Sáenz Peña.*Casa central/ });
     expect(saenz).toHaveAttribute('aria-expanded', 'true');
@@ -59,7 +60,7 @@ describe('landing', () => {
   });
 
   it('valida y envía el formulario por WhatsApp', async () => {
-    renderInicio();
+    await renderInicio();
     const user = userEvent.setup();
     const abrir = vi.spyOn(window, 'open').mockImplementation(() => null);
 

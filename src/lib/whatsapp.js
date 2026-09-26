@@ -1,4 +1,4 @@
-import { WHATSAPP_NUMBER } from '../data/sitio.js';
+import { WHATSAPP_NUMBER } from '../data/institucion.js';
 
 export const esNumeroPlaceholder = (numero = WHATSAPP_NUMBER) => /0{6}$/.test(numero);
 

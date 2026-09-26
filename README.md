@@ -4,11 +4,25 @@ Sitio de A.I.L.A.A.C.C. (U.E.G.P. N° 195, Chaco) hecho con **React + Vite + Rea
 
 | Ruta | Para quién | Qué es |
 |---|---|---|
-| `/` | Familias y público | Landing: servicios, sedes, contacto por WhatsApp |
+| `/` | Familias y público | Landing: servicios, sedes, contacto por WhatsApp (o "Sitio en construcción", ver abajo) |
 | `/herramientas` | Personal (no se indexa) | Listado de herramientas internas |
 | `/herramientas/control-horas` | Personal | Procesa los reportes del registro dactilar |
 
 `/control-horas.html` (dirección de la versión anterior) redirige a la herramienta.
+
+## Landing publicada u oculta
+
+La variable `VITE_LANDING_PUBLICA` decide qué se ve en `/`:
+
+| Archivo | Valor | Resultado |
+|---|---|---|
+| `.env` (lo que se publica) | `false` | Página "Sitio en construcción" con WhatsApp, teléfono y redes. El código de la landing **no se incluye** en el build. |
+| `.env.development` (`npm run dev`) | `true` | Se ve la landing, para seguir trabajando en ella. |
+
+- Ver la página provisoria en local: `VITE_LANDING_PUBLICA=false npm run dev`
+- **Lanzar la landing:** cambiar `.env` a `VITE_LANDING_PUBLICA=true`, commit y push.
+
+Las herramientas (`/herramientas`) funcionan igual en los dos casos.
 
 ## Uso
 
@@ -32,12 +46,13 @@ Los reportes de prueba de `e2e/fixtures/` tienen datos ficticios (`node e2e/fixt
 ## Estructura
 
     src/
-      data/sitio.js            contenido del sitio: sedes (dirección, teléfono), servicios, contacto, WhatsApp
+      data/institucion.js      datos compartidos: institución, contacto, WhatsApp, redes, horario
+      data/sitio.js            contenido de la landing: sedes (dirección, teléfono), servicios, textos
       components/ui/           piezas reutilizables: Button, Icon, SectionHead, Brand
       components/layout/       headers, footers, botón de WhatsApp, scroll a #anclas
       layouts/                 SiteLayout (landing) y ToolsLayout (área del personal)
       features/home/           secciones de la landing; contacto/ tiene el estado del formulario
-      pages/                   Home, listado de herramientas, página de una herramienta
+      pages/                   Home, "Sitio en construcción", listado de herramientas, página de una herramienta
       tools/registro.js        registro de herramientas (se cargan de forma diferida)
       tools/control-horas/     la herramienta: componentes, hook de estado y motor/ (lógica de Excel)
       styles/                  sitio.css (tokens y componentes) y herramientas.css
