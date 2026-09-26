@@ -10,8 +10,12 @@ test.describe('landing', () => {
     for (const id of ['inicio', 'nosotros', 'servicios', 'sedes', 'contacto']) await expect(page.locator('#' + id)).toBeAttached();
     await expect(page.locator('.serv-card')).toHaveCount(6);
     await expect(page.locator('.sede-item')).toHaveCount(6);
-    await expect(page.locator('.hcard-logo img')).toHaveJSProperty('complete', true);
-    expect(await page.locator('.hcard-logo img').evaluate((i) => i.naturalWidth)).toBeGreaterThan(0);
+    expect(await page.locator('.brand img').evaluate((i) => i.complete && i.naturalWidth)).toBeGreaterThan(0);
+    await expect(page.locator('.hero-cards .hcard')).toHaveCount(3);
+    await expect(page.locator('.hero-cards .hcard h3')).toHaveText(['Centro Educativo Terapéutico', 'Integración Escolar', 'Estimulación Temprana']);
+    await expect(page.locator('.hero-trust > span')).toHaveText([
+      '6 sedes en la provincia del Chaco', '+370 alumnos', '+160 colaboradores', '+10 años de experiencia',
+    ]);
     sinErrores();
   });
 
@@ -90,5 +94,33 @@ test.describe('landing', () => {
     await page.goto('./');
     const [scroll, ancho] = await page.evaluate(() => [document.documentElement.scrollWidth, window.innerWidth]);
     expect(scroll).toBeLessThanOrEqual(ancho);
+  });
+});
+
+test.describe('scroll suave', () => {
+  test('las anclas se desplazan con animación', async ({ page }) => {
+    await page.goto('./');
+    expect(await page.evaluate(() => getComputedStyle(document.documentElement).scrollBehavior)).toBe('smooth');
+    await page.locator('.hero-actions').getByRole('link', { name: 'Ver sedes en el Chaco' }).click();
+    // a mitad de camino: el scroll arrancó pero todavía no llegó
+    await page.waitForFunction(() => window.scrollY > 0);
+    const intermedio = await page.evaluate(() => window.scrollY);
+    await expect(page.locator('#sedes h2')).toBeInViewport();
+    const final = await page.evaluate(() => window.scrollY);
+    expect(intermedio).toBeLessThan(final);
+  });
+
+  test('con "reducir movimiento" el salto es inmediato', async ({ browser }) => {
+    const page = await browser.newPage({ reducedMotion: 'reduce' });
+    await page.goto('http://localhost:4173/ailaacc-sitio/');
+    expect(await page.evaluate(() => getComputedStyle(document.documentElement).scrollBehavior)).toBe('auto');
+    await page.close();
+  });
+
+  test('al cambiar de página se arranca arriba', async ({ page }) => {
+    await page.goto('./#contacto');
+    await page.getByRole('link', { name: 'Acceso personal · Herramientas →' }).click();
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText('Herramientas del personal');
+    await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(0);
   });
 });

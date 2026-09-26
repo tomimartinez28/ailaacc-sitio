@@ -12,11 +12,11 @@ export const INSTITUCION = {
 export const WHATSAPP_NUMBER = '5493644000000';
 
 export const CONTACTO = {
-  direccionCentral: 'Dirección a confirmar, Presidencia Roque Sáenz Peña, Chaco', // TODO
-  telefono: { texto: '(3644) 42-0000', href: 'tel:+543644420000' },               // TODO
-  email: 'contacto@ailaacc.org.ar',                                                // TODO
-  instagram: '@ailaacc.chaco',                                                     // TODO: confirmar y enlazar
-  horario: 'Lunes a viernes, 8 a 17 hs, en todas las sedes.',
+  direccionCentral: 'Mariano Moreno 551, Presidencia Roque Sáenz Peña, Chaco', // TODO
+  telefono: { texto: '(3644) 359654', href: 'tel:+543644359654' },               // TODO
+  email: 'admisioneingresosailaacc195@gmail.com',                                                // TODO
+  instagram: '@ailaacc_sp',                                                     // TODO: confirmar y enlazar
+  horario: 'Lunes a viernes, 8hs a 12 hs y de 16hs a 20hs, en todas las sedes.',
 };
 
 // Navegación de la landing (anclas a secciones de la página de inicio)
@@ -66,6 +66,14 @@ export const VALORES = [
   { tone: 'yellow', titulo: 'Acompañamiento a las familias', texto: 'Informamos y sostenemos a la familia en cada etapa del proceso, como parte activa del abordaje.' },
 ];
 
+// Cifras del hero: [texto destacado, resto]
+export const CIFRAS = [
+  ['6 sedes', 'en la provincia del Chaco'],
+  ['+370 alumnos', ''],
+  ['+160 colaboradores', ''],
+  ['+10 años', 'de experiencia'],
+];
+
 export const FICHA = [
   ['Denominación', 'A.I.L.A.A.C.C.'],
   ['Registro', 'U.E.G.P. N° 195'],
@@ -79,37 +87,37 @@ export const FICHA = [
 export const SEDES = [
   {
     id: 'saenz-pena', nombre: 'Sáenz Peña', central: true, opcion: 'Sáenz Peña (casa central)',
-    localidad: 'Presidencia Roque Sáenz Peña', telefono: '(3644) 42-0000',       // TODO: dirección y teléfono reales
+    localidad: 'Presidencia Roque Sáenz Peña', telefono: '(3644) 359654',       // TODO: dirección y teléfono reales
     mapa: { x: 207.6, y: 140.4, lx: 195, ly: 136, anchor: 'end' },
   },
   {
     id: 'villa-angela', nombre: 'Villa Ángela', opcion: 'Villa Ángela',
-    localidad: 'Villa Ángela', telefono: '(3735) 42-0000',
+    localidad: 'Villa Ángela', telefono: '(3644) 309692',
     mapa: { x: 164.4, y: 265.2, lx: 176, ly: 269, anchor: 'start' },
   },
   {
     id: 'quitilipi', nombre: 'Quitilipi', opcion: 'Quitilipi',
-    localidad: 'Quitilipi', telefono: '(3735) 47-0000',
+    localidad: 'Quitilipi', telefono: '(3644) 275436',
     mapa: { x: 242.8, y: 153.2, lx: 254, ly: 157, anchor: 'start' },
   },
   {
     id: 'tres-isletas', nombre: 'Tres Isletas', opcion: 'Tres Isletas',
-    localidad: 'Tres Isletas', telefono: '(3732) 42-0000',
+    localidad: 'Tres Isletas', telefono: '(3644) 232512',
     mapa: { x: 209.2, y: 68.4, lx: 221, ly: 72, anchor: 'start' },
   },
   {
     id: 'las-brenas', nombre: 'Las Breñas', opcion: 'Las Breñas',
-    localidad: 'Las Breñas', telefono: '(3733) 42-0000',
+    localidad: 'Las Breñas', telefono: '(3644) 277718',
     mapa: { x: 105.2, y: 188.4, lx: 117, ly: 186, anchor: 'start' },
   },
   {
     id: 'charata', nombre: 'Charata', opcion: 'Charata',
-    localidad: 'Charata', telefono: '(3731) 42-0000',
+    localidad: 'Charata', telefono: '(3644) 559386',
     mapa: { x: 87.6, y: 207.6, lx: 76, ly: 212, anchor: 'end' },
   },
 ];
 
-export const HORARIO_SEDES = 'Lunes a viernes, 8 a 17 hs';
+export const HORARIO_SEDES = 'Lunes a viernes, 8hs a 12 hs y 16hs a 20hs';
 
 export const OPCIONES_SEDE = [...SEDES.map((s) => s.opcion), 'No sé / me orientan'];
 

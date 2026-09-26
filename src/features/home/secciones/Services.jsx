@@ -33,7 +33,7 @@ export function Services() {
         <SectionHead
           eyebrow="Nuestros servicios"
           title="Cinco áreas de trabajo, un mismo acompañamiento."
-          lede="Desde el diagnóstico inicial hasta el sostén cotidiano en la escuela y el traslado a cada sede."
+          lede="Desde el diagnóstico inicial hasta el sostén cotidiano en la escuela y el traslado a cada prestación."
         />
         <div className="serv-grid">
           {SERVICIOS.map((s) => <ServiceCard key={s.id} {...s} />)}

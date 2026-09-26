@@ -22,7 +22,7 @@ export function ContactInfo() {
       </Bloque>
       <Bloque titulo="Redes">
         {/* TODO: confirmar usuario y enlazar a https://www.instagram.com/USUARIO/ */}
-        <Linea icon="instagram">{`${CONTACTO.instagram} en Instagram (a confirmar)`}</Linea>
+        <Linea icon="instagram">{`${CONTACTO.instagram} en Instagram`}</Linea>
       </Bloque>
     </aside>
   );

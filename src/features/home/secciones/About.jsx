@@ -25,7 +25,7 @@ export function About() {
         <SectionHead eyebrow="Sobre nosotros" title="Un equipo interdisciplinario al servicio de cada trayectoria." />
         <div className="about-grid">
           <div className="about-copy">
-            <p className="lede">A.I.L.A.A.C.C. es una institución educativa que trabaja junto a personas con discapacidad y sus familias, articulando abordajes terapéuticos, educativos y comunitarios a lo largo de toda la provincia del Chaco.</p>
+            <p className="lede">A.I.L.A.A.C.C. es una institución educativa que trabaja junto a personas con discapacidad y sus familias, articulando abordajes terapéuticos, educativos y comunitarios desde nuestras seis sedes en la provincia del Chaco.</p>
             <p>Nuestro equipo está integrado por profesionales de la educación especial, psicología, fonoaudiología, psicopedagogía y terapia ocupacional, que diseñan planes de trabajo individuales según la etapa y las necesidades de cada persona.</p>
             <p>La sede central funciona en Sáenz Peña, y desde allí coordinamos el trabajo con los equipos de Villa Ángela, Quitilipi, Tres Isletas, Las Breñas y Charata.</p>
             <IdCard filas={FICHA} />
