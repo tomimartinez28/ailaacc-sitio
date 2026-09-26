@@ -1,5 +1,6 @@
 import { expect, test } from '@playwright/test';
 import { capturarWindowOpen, vigilarErrores } from './utils.js';
+import { HORARIO_SEDES, REDES, SEDES, WHATSAPP_NUMBER, direccionCompleta } from '../src/data/sitio.js';
 
 test.describe('landing', () => {
   test('carga completa, sin errores y con todas las secciones', async ({ page }) => {
@@ -42,7 +43,8 @@ test.describe('landing', () => {
     await page.locator('.map-pin[data-sede="villa-angela"]').click();
     await expect(item('villa-angela')).toHaveClass(/active/);
     await expect(item('saenz-pena')).not.toHaveClass(/active/);
-    await expect(item('villa-angela').getByText('(3735) 42-0000 · WhatsApp disponible')).toBeVisible();
+    const villa = SEDES.find((x) => x.id === 'villa-angela');
+    await expect(item('villa-angela').getByText(`${villa.telefono} · WhatsApp disponible`)).toBeVisible();
     await page.locator('.map-pin[data-sede="charata"]').focus();
     await page.keyboard.press('Enter');
     await expect(item('charata')).toHaveClass(/active/);
@@ -67,7 +69,7 @@ test.describe('landing', () => {
     await page.getByRole('button', { name: 'Enviar por WhatsApp' }).click();
     await expect(page.locator('#form-status')).toHaveText('Abriendo WhatsApp…');
     const texto = 'Hola AILAACC, soy María Gómez.\nSede de interés: Quitilipi.\nMotivo: Quiero trabajar en AILAACC (envío de CV).\nMi teléfono de contacto: 3644 000000.\nMensaje: Adjunto CV';
-    expect(await abiertos()).toEqual([['https://wa.me/5493644000000?text=' + encodeURIComponent(texto), '_blank', 'noopener']]);
+    expect(await abiertos()).toEqual([[`https://wa.me/${WHATSAPP_NUMBER}?text=` + encodeURIComponent(texto), '_blank', 'noopener']]);
   });
 
   test('el formulario no se envía con campos vacíos', async ({ page }) => {
@@ -87,7 +89,7 @@ test.describe('landing', () => {
     const abiertos = await capturarWindowOpen(page);
     await page.goto('./');
     await page.getByRole('button', { name: 'Escribir por WhatsApp' }).click();
-    expect(await abiertos()).toEqual([['https://wa.me/5493644000000?text=' + encodeURIComponent('Hola AILAACC, quisiera consultar por sus servicios.'), '_blank', 'noopener']]);
+    expect(await abiertos()).toEqual([[`https://wa.me/${WHATSAPP_NUMBER}?text=` + encodeURIComponent('Hola AILAACC, quisiera consultar por sus servicios.'), '_blank', 'noopener']]);
   });
 
   test('sin scroll horizontal', async ({ page }) => {
@@ -123,4 +125,32 @@ test.describe('scroll suave', () => {
     await expect(page.getByRole('heading', { level: 1 })).toHaveText('Herramientas del personal');
     await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(0);
   });
+});
+
+test('datos de contacto y direcciones de cada sede', async ({ page }) => {
+  expect(WHATSAPP_NUMBER).toBe('5493644359654');
+  await page.goto('./#sedes');
+  for (const sede of SEDES) {
+    const item = page.locator(`.sede-item[data-sede="${sede.id}"]`);
+    if (!sede.central) await item.locator('.sede-head').click();
+    await expect(item.locator('.sede-line').nth(0)).toHaveText(direccionCompleta(sede));
+    await expect(item.locator('.sede-line').nth(1)).toHaveText(`${sede.telefono} · WhatsApp disponible`);
+    await expect(item.locator('.sede-line').nth(2)).toHaveText(HORARIO_SEDES);
+  }
+  await expect(page.getByText('Dirección a confirmar')).toHaveCount(0);
+  const lado = page.locator('.contact-side');
+  await expect(lado.getByText('Mariano Moreno 551, Presidencia Roque Sáenz Peña, Chaco')).toBeVisible();
+  await expect(lado.getByText('Lunes a viernes, 8 a 12 hs y 16 a 20 hs, en todas las sedes.')).toBeVisible();
+  await expect(lado.locator('.side-block').last().locator('.side-line')).toHaveText(['@ailaacc_sp en Instagram', 'AILAACC en Facebook', 'AILAACC en LinkedIn']);
+  const esperados = {
+    Instagram: 'https://www.instagram.com/ailaacc_sp/',
+    Facebook: 'https://www.facebook.com/share/1DwVV2fMqY/',
+    LinkedIn: 'https://www.linkedin.com/company/102258350/',
+  };
+  for (const r of REDES) {
+    const link = lado.getByRole('link', { name: new RegExp(`en ${r.red}`) });
+    await expect(link).toHaveAttribute('href', esperados[r.red]);
+    await expect(link).toHaveAttribute('target', '_blank');
+    await expect(link).toHaveAttribute('rel', 'noopener noreferrer');
+  }
 });

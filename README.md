@@ -32,7 +32,7 @@ Los reportes de prueba de `e2e/fixtures/` tienen datos ficticios (`node e2e/fixt
 ## Estructura
 
     src/
-      data/sitio.js            contenido del sitio: sedes, servicios, contacto, WhatsApp (datos a completar: TODO)
+      data/sitio.js            contenido del sitio: sedes (dirección, teléfono), servicios, contacto, WhatsApp
       components/ui/           piezas reutilizables: Button, Icon, SectionHead, Brand
       components/layout/       headers, footers, botón de WhatsApp, scroll a #anclas
       layouts/                 SiteLayout (landing) y ToolsLayout (área del personal)

@@ -1,5 +1,4 @@
-// Contenido del sitio en un solo lugar. Para completar los datos reales, editar solo este archivo.
-// Los valores marcados con TODO son placeholders.
+// Contenido del sitio en un solo lugar: para actualizar datos, editar solo este archivo.
 
 export const INSTITUCION = {
   sigla: 'AILAACC',
@@ -8,16 +7,24 @@ export const INSTITUCION = {
   provincia: 'Chaco',
 };
 
-// TODO: reemplazar por el número institucional real (código país 54 9 + código de área + número)
-export const WHATSAPP_NUMBER = '5493644000000';
+// WhatsApp de la casa central (formato internacional: 54 9 + código de área + número, sin espacios)
+export const WHATSAPP_NUMBER = '5493644359654';
 
+export const HORARIO_SEDES = 'Lunes a viernes, 8 a 12 hs y 16 a 20 hs';
+
+// Datos de la casa central (la dirección está en SEDES, más abajo)
 export const CONTACTO = {
-  direccionCentral: 'Mariano Moreno 551, Presidencia Roque Sáenz Peña, Chaco', // TODO
-  telefono: { texto: '(3644) 359654', href: 'tel:+543644359654' },               // TODO
-  email: 'admisioneingresosailaacc195@gmail.com',                                                // TODO
-  instagram: '@ailaacc_sp',                                                     // TODO: confirmar y enlazar
-  horario: 'Lunes a viernes, 8hs a 12 hs y de 16hs a 20hs, en todas las sedes.',
+  telefono: { texto: '(3644) 359654', href: 'tel:+543644359654' },
+  email: 'admisioneingresosailaacc195@gmail.com',
+  horario: `${HORARIO_SEDES}, en todas las sedes.`,
 };
+
+// Redes oficiales. Se muestran como "<texto> en <red>" con el ícono de cada una.
+export const REDES = [
+  { red: 'Instagram', icono: 'instagram', texto: '@ailaacc_sp', url: 'https://www.instagram.com/ailaacc_sp/' },
+  { red: 'Facebook', icono: 'facebook', texto: 'AILAACC', url: 'https://www.facebook.com/share/1DwVV2fMqY/' },
+  { red: 'LinkedIn', icono: 'linkedin', texto: 'AILAACC', url: 'https://www.linkedin.com/company/102258350/' },
+];
 
 // Navegación de la landing (anclas a secciones de la página de inicio)
 export const NAV_SECCIONES = [
@@ -84,40 +91,40 @@ export const FICHA = [
 
 // Coordenadas del mapa: proyección de lat/lon reales -> x = 30+(lon+61.55)*160, y = 30+(-lat-26.1)*160
 // label: posición del texto y alineación. opcion: valor en el <select> del formulario.
+// direccion: calle y número; se muestra como "<direccion>, <localidad>, Chaco".
 export const SEDES = [
   {
     id: 'saenz-pena', nombre: 'Sáenz Peña', central: true, opcion: 'Sáenz Peña (casa central)',
-    localidad: 'Presidencia Roque Sáenz Peña', telefono: '(3644) 359654',       // TODO: dirección y teléfono reales
+    direccion: 'Mariano Moreno 551', localidad: 'Presidencia Roque Sáenz Peña', telefono: '(3644) 359654',
     mapa: { x: 207.6, y: 140.4, lx: 195, ly: 136, anchor: 'end' },
   },
   {
     id: 'villa-angela', nombre: 'Villa Ángela', opcion: 'Villa Ángela',
-    localidad: 'Villa Ángela', telefono: '(3644) 309692',
+    direccion: 'Presidente Perón 547', localidad: 'Villa Ángela', telefono: '(3644) 309692',
     mapa: { x: 164.4, y: 265.2, lx: 176, ly: 269, anchor: 'start' },
   },
   {
     id: 'quitilipi', nombre: 'Quitilipi', opcion: 'Quitilipi',
-    localidad: 'Quitilipi', telefono: '(3644) 275436',
+    direccion: 'La Pampa 320', localidad: 'Quitilipi', telefono: '(3644) 275436',
     mapa: { x: 242.8, y: 153.2, lx: 254, ly: 157, anchor: 'start' },
   },
   {
     id: 'tres-isletas', nombre: 'Tres Isletas', opcion: 'Tres Isletas',
-    localidad: 'Tres Isletas', telefono: '(3644) 232512',
+    direccion: 'Alberdi 274', localidad: 'Tres Isletas', telefono: '(3644) 232512',
     mapa: { x: 209.2, y: 68.4, lx: 221, ly: 72, anchor: 'start' },
   },
   {
     id: 'las-brenas', nombre: 'Las Breñas', opcion: 'Las Breñas',
-    localidad: 'Las Breñas', telefono: '(3644) 277718',
+    direccion: 'Mercante 956', localidad: 'Las Breñas', telefono: '(3644) 277718',
     mapa: { x: 105.2, y: 188.4, lx: 117, ly: 186, anchor: 'start' },
   },
   {
     id: 'charata', nombre: 'Charata', opcion: 'Charata',
-    localidad: 'Charata', telefono: '(3644) 559386',
+    direccion: 'Almirante Brown 195', localidad: 'Charata', telefono: '(3644) 559386',
     mapa: { x: 87.6, y: 207.6, lx: 76, ly: 212, anchor: 'end' },
   },
 ];
 
-export const HORARIO_SEDES = 'Lunes a viernes, 8hs a 12 hs y 16hs a 20hs';
 
 export const OPCIONES_SEDE = [...SEDES.map((s) => s.opcion), 'No sé / me orientan'];
 
@@ -130,3 +137,7 @@ export const OPCIONES_MOTIVO = [
   { value: MOTIVO_TRABAJO, label: 'Quiero trabajar en AILAACC' },
   { value: MOTIVO_OTRA, label: 'Otra consulta' },
 ];
+
+export const SEDE_CENTRAL = SEDES.find((s) => s.central);
+
+export const direccionCompleta = (sede) => `${sede.direccion}, ${sede.localidad}, Chaco`;

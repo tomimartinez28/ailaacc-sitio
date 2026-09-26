@@ -5,6 +5,7 @@ import { createMemoryRouter, RouterProvider } from 'react-router';
 import { rutas } from '../../../router.jsx';
 import { FORMULARIO_INICIAL, reducerContacto } from './contactoEstado.js';
 import { mensajeConsulta, urlWhatsApp } from '../../../lib/whatsapp.js';
+import { WHATSAPP_NUMBER } from '../../../data/sitio.js';
 
 const renderInicio = () => {
   window.IntersectionObserver = class { observe() {} disconnect() {} };
@@ -76,6 +77,6 @@ describe('landing', () => {
     await user.click(screen.getByRole('button', { name: /Enviar por WhatsApp/ }));
     expect(screen.getByRole('status')).toHaveTextContent('Abriendo WhatsApp…');
     const texto = 'Hola AILAACC, soy María Gómez.\nSede de interés: Quitilipi.\nMotivo: Centro Educativo Terapéutico.\nMi teléfono de contacto: 3644 111111.';
-    expect(abrir).toHaveBeenCalledWith('https://wa.me/5493644000000?text=' + encodeURIComponent(texto), '_blank', 'noopener');
+    expect(abrir).toHaveBeenCalledWith(`https://wa.me/${WHATSAPP_NUMBER}?text=` + encodeURIComponent(texto), '_blank', 'noopener');
   });
 });

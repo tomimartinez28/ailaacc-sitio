@@ -16,6 +16,8 @@ const ICONOS = {
   reloj: { ...TRAZO_24, strokeLinecap: undefined, strokeLinejoin: undefined, d: <><circle cx="12" cy="12" r="10" /><path d="M12 6v6l4 2" /></> },
   mail: { ...TRAZO_24, strokeLinecap: undefined, strokeLinejoin: undefined, d: <><rect x="3" y="5" width="18" height="14" rx="2" /><path d="M3 7l9 6 9-6" /></> },
   instagram: { ...TRAZO_24, strokeLinecap: undefined, strokeLinejoin: undefined, d: <><rect x="3" y="3" width="18" height="18" rx="4" /><circle cx="12" cy="12" r="4" /><circle cx="17.2" cy="6.8" r="0.6" fill="currentColor" /></> },
+  facebook: { ...TRAZO_24, d: <><rect x="3" y="3" width="18" height="18" rx="4" /><path d="M15.5 7.5H14a2.5 2.5 0 0 0-2.5 2.5v11M9 13h6" /></> },
+  linkedin: { ...TRAZO_24, d: <><rect x="3" y="3" width="18" height="18" rx="4" /><path d="M8 10.5V17M8 7.25v.01M12 17v-6.5M12 13.5a2.5 2.5 0 0 1 5 0V17" /></> },
   subir: { ...TRAZO_24, d: <><path d="M12 16V4M7 9l5-5 5 5" /><path d="M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3" /></> },
   candado: { ...TRAZO_24, d: <><rect x="5" y="11" width="14" height="9" rx="2" /><path d="M8 11V8a4 4 0 0 1 8 0v3" /></> },
   planilla: { ...TRAZO_24, d: <><rect x="4" y="3" width="16" height="18" rx="2" /><path d="M4 9h16M4 15h16M10 3v18" /></> },

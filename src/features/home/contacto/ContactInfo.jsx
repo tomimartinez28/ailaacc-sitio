@@ -1,5 +1,5 @@
 import { Icon } from '../../../components/ui/Icon.jsx';
-import { CONTACTO } from '../../../data/sitio.js';
+import { CONTACTO, REDES, SEDE_CENTRAL, direccionCompleta } from '../../../data/sitio.js';
 
 function Linea({ icon, children }) {
   return <div className="side-line"><Icon name={icon} /><span>{children}</span></div>;
@@ -12,8 +12,8 @@ function Bloque({ titulo, children }) {
 export function ContactInfo() {
   return (
     <aside className="contact-side">
-      <Bloque titulo="Casa central — Sáenz Peña">
-        <Linea icon="ubicacion">{CONTACTO.direccionCentral}</Linea>
+      <Bloque titulo={`Casa central — ${SEDE_CENTRAL.nombre}`}>
+        <Linea icon="ubicacion">{direccionCompleta(SEDE_CENTRAL)}</Linea>
         <Linea icon="telefono"><a href={CONTACTO.telefono.href}>{CONTACTO.telefono.texto}</a></Linea>
         <Linea icon="mail"><a href={'mailto:' + CONTACTO.email}>{CONTACTO.email}</a></Linea>
       </Bloque>
@@ -21,8 +21,12 @@ export function ContactInfo() {
         <Linea icon="reloj">{CONTACTO.horario}</Linea>
       </Bloque>
       <Bloque titulo="Redes">
-        {/* TODO: confirmar usuario y enlazar a https://www.instagram.com/USUARIO/ */}
-        <Linea icon="instagram">{`${CONTACTO.instagram} en Instagram`}</Linea>
+        {REDES.map((r) => (
+          <Linea key={r.red} icon={r.icono}>
+            <a href={r.url} target="_blank" rel="noopener noreferrer" aria-label={`${r.texto} en ${r.red} (se abre en una pestaña nueva)`}>{r.texto}</a>
+            {` en ${r.red}`}
+          </Linea>
+        ))}
       </Bloque>
     </aside>
   );

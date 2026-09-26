@@ -1,7 +1,7 @@
 import { memo } from 'react';
 import { Button } from '../../../components/ui/Button.jsx';
 import { Icon } from '../../../components/ui/Icon.jsx';
-import { HORARIO_SEDES } from '../../../data/sitio.js';
+import { HORARIO_SEDES, direccionCompleta } from '../../../data/sitio.js';
 
 // Una sede del acordeón. Memoizada: al cambiar de sede solo se re-renderizan la que se abre y la que se cierra.
 export const SedeItem = memo(function SedeItem({ sede, numero, abierta, onAlternar, onConsultar }) {
@@ -23,7 +23,7 @@ export const SedeItem = memo(function SedeItem({ sede, numero, abierta, onAltern
       </h3>
       <div className="sede-body" id={idBody} role="region" aria-labelledby={idHead}>
         <div className="sede-body-inner">
-          <div className="sede-line"><Icon name="ubicacion" /><span>{`Dirección a confirmar — ${sede.localidad}, Chaco`}</span></div>
+          <div className="sede-line"><Icon name="ubicacion" /><span>{direccionCompleta(sede)}</span></div>
           <div className="sede-line"><Icon name="telefono" /><span>{`${sede.telefono} · WhatsApp disponible`}</span></div>
           <div className="sede-line"><Icon name="reloj" /><span>{HORARIO_SEDES}</span></div>
           <Button size="sm" href="#contacto" onClick={() => onConsultar(sede.opcion)}>Consultar por esta sede</Button>
