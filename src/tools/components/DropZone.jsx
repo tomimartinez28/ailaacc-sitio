@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Icon } from '../../../components/ui/Icon.jsx';
+import { Icon } from '../../components/ui/Icon.jsx';
 
 // Zona para elegir o arrastrar archivos. Llama a onArchivos(File[]) y espera a que termine
 // antes de limpiar el input (así se puede volver a elegir el mismo archivo).

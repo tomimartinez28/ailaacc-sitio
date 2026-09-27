@@ -2,12 +2,13 @@ import { describe, expect, it } from 'vitest';
 import { act, render, renderHook, screen, waitFor } from '@testing-library/react';
 import { createMemoryRouter, RouterProvider } from 'react-router';
 import { rutas } from '../../router.jsx';
-import { useProcesarReportes } from './hooks/useProcesarReportes.js';
-import { ResultList } from './components/ResultItem.jsx';
+import { useProcesarArchivos } from '../hooks/useProcesarArchivos.js';
+import { ResultList } from '../components/ResultList.jsx';
+import { describirHoras, salidaHoras } from './resumen.js';
 
 const archivo = (nombre) => ({ name: nombre, arrayBuffer: async () => new ArrayBuffer(0) });
 
-describe('useProcesarReportes', () => {
+describe('useProcesarArchivos', () => {
   it('procesa en orden, muestra el más reciente arriba y guarda errores', async () => {
     const vistos = [];
     const falso = async (_, nombre) => {
@@ -15,7 +16,7 @@ describe('useProcesarReportes', () => {
       if (nombre === 'malo.xls') throw new Error('Formato no reconocido.');
       return { formato: 'F', estadisticas: { personas: 1, marcas: 2, diasImpares: 0, marcasDuplicadas: 0 }, buffer: new ArrayBuffer(1) };
     };
-    const { result } = renderHook(() => useProcesarReportes(falso));
+    const { result } = renderHook(() => useProcesarArchivos(falso));
     await act(() => result.current.procesar([archivo('a.xlsx'), archivo('malo.xls')]));
     expect(vistos).toEqual(['a.xlsx', 'malo.xls']);
     expect(result.current.items.map((i) => [i.nombre, i.estado])).toEqual([['malo.xls', 'error'], ['a.xlsx', 'listo']]);
@@ -23,9 +24,10 @@ describe('useProcesarReportes', () => {
   });
 });
 
-describe('ResultList', () => {
+describe('ResultList de Control de horas', () => {
   it('muestra los estados igual que la versión HTML', () => {
-    render(<ResultList items={[
+    expect(salidaHoras('reporte.xls')).toBe('reporte_horas.xlsx');
+    render(<ResultList describir={describirHoras} nombreSalida={salidaHoras} items={[
       { id: 3, nombre: 'c.xlsx', estado: 'procesando' },
       { id: 2, nombre: 'b.xlsx', estado: 'error', error: 'Falla' },
       { id: 1, nombre: 'a.xlsx', estado: 'listo', resultado: { formato: 'ANVIZ – registros', estadisticas: { personas: 3, marcas: 120, diasImpares: 2, marcasDuplicadas: 1 } } },

@@ -12,5 +12,5 @@ export function descargar(nombre, buffer) {
   setTimeout(() => URL.revokeObjectURL(url), 10000);
 }
 
-// "reporte.xls" -> "reporte_horas.xlsx"
-export const nombreDeSalida = (nombreArchivo) => nombreArchivo.replace(/\.[^.]+$/, '') + '_horas.xlsx';
+// ("reporte.xls", "horas") -> "reporte_horas.xlsx"
+export const nombreDeSalida = (nombreArchivo, sufijo) => nombreArchivo.replace(/\.[^.]+$/, '') + `_${sufijo}.xlsx`;

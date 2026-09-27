@@ -14,7 +14,7 @@ export default defineConfig({
   },
   projects: [
     { name: 'escritorio', use: { viewport: { width: 1280, height: 900 } }, testIgnore: /construccion/ },
-    { name: 'celular', use: { viewport: { width: 390, height: 844 }, hasTouch: true }, testMatch: /landing|rutas/ },
+    { name: 'celular', use: { viewport: { width: 390, height: 844 }, hasTouch: true }, testMatch: /landing|rutas|extractos/ },
     // Build tal como se publica mientras la landing está oculta (VITE_LANDING_PUBLICA=false)
     { name: 'en-construccion', use: { baseURL: 'http://localhost:4174/ailaacc-sitio/', viewport: { width: 1280, height: 900 } }, testMatch: /construccion/ },
     { name: 'en-construccion-celular', use: { baseURL: 'http://localhost:4174/ailaacc-sitio/', viewport: { width: 390, height: 844 }, hasTouch: true }, testMatch: /construccion/ },

@@ -1,0 +1,5 @@
+/* Estilos propios de "Extractos bancarios". Lo común está en styles/herramientas.css. */
+.chip.ingreso { background: var(--green-soft); color: var(--green-text); }
+.chip.gasto { background: var(--orange-soft); color: var(--orange-text); }
+.muestra-ingreso { background: var(--green); }
+.muestra-gasto { background: var(--orange); }

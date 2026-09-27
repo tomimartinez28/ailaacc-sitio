@@ -7,6 +7,7 @@ Sitio de A.I.L.A.A.C.C. (U.E.G.P. N° 195, Chaco) hecho con **React + Vite + Rea
 | `/` | Familias y público | Landing: servicios, sedes, contacto por WhatsApp (o "Sitio en construcción", ver abajo) |
 | `/herramientas` | Personal (no se indexa) | Listado de herramientas internas |
 | `/herramientas/control-horas` | Personal | Procesa los reportes del registro dactilar |
+| `/herramientas/extractos-bancarios` | Personal | Resumen de ingresos y gastos bancarios (en desarrollo: solo interfaz) |
 
 `/control-horas.html` (dirección de la versión anterior) redirige a la herramienta.
 
@@ -54,15 +55,20 @@ Los reportes de prueba de `e2e/fixtures/` tienen datos ficticios (`node e2e/fixt
       features/home/           secciones de la landing; contacto/ tiene el estado del formulario
       pages/                   Home, "Sitio en construcción", listado de herramientas, página de una herramienta
       tools/registro.js        registro de herramientas (se cargan de forma diferida)
-      tools/control-horas/     la herramienta: componentes, hook de estado y motor/ (lógica de Excel)
+      tools/components/        piezas comunes: ToolHero, ProcesadorArchivos, DropZone, ResultList, Nota
+      tools/hooks/             useProcesarArchivos (estado de la lista de archivos)
+      tools/control-horas/     motor/ (lógica de Excel), resumen.js, leyenda y colores propios
+      tools/extractos-bancarios/  interfaz lista; motor/ pendiente (define el formato de resultado esperado)
       styles/                  sitio.css (tokens y componentes) y herramientas.css
     e2e/                       tests end-to-end y reportes de prueba
 
 ## Agregar una herramienta
 
-1. Crear `src/tools/<slug>/` con un componente por defecto (puede usar `ToolHero`).
+1. Crear `src/tools/<slug>/` con un componente por defecto. Si procesa archivos, usar `ToolHero` +
+   `ProcesadorArchivos` y definir `procesarArchivo`, `describir(resultado)` y `nombreSalida(nombre)`
+   (ver `extractos-bancarios/` como plantilla).
 2. Sumar una entrada en `src/tools/registro.js`. Aparece sola en `/herramientas` y en `/herramientas/<slug>`,
-   y su código solo se descarga cuando alguien la abre.
+   y su código solo se descarga cuando alguien la abre. Con `enDesarrollo: true` la tarjeta lo indica.
 
 ## Control de horas
 

@@ -1,11 +1,10 @@
 import { useCallback, useRef, useState } from 'react';
-import { procesarArchivo as procesarConMotor } from '../motor/index.js';
 
-// Estado de la lista de reportes procesados.
+// Estado de la lista de archivos procesados por una herramienta.
+// procesarArchivo(arrayBuffer, nombre) -> Promise<resultado>; si falla, el error se muestra en la lista.
 // Cada ítem: { id, nombre, estado: 'procesando' | 'listo' | 'error', resultado?, error? }
-// Los archivos se procesan de a uno, en el orden en que se eligieron (igual que la versión HTML),
-// y el más reciente se muestra arriba.
-export function useProcesarReportes(procesarArchivo = procesarConMotor) {
+// Los archivos se procesan de a uno, en el orden en que se eligieron, y el más reciente se muestra arriba.
+export function useProcesarArchivos(procesarArchivo) {
   const [items, setItems] = useState([]);
   const siguienteId = useRef(0);
 
