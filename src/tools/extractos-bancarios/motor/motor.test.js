@@ -66,15 +66,17 @@ describe('integridad', () => {
 });
 
 describe('extractos por banco', () => {
-  it('Credicoop: CUIT en tres formatos, impuestos, comisiones y su IVA', async () => {
+  it('Credicoop: CUIT en tres formatos, impuestos, comisiones, sellos, intereses y suscripción', async () => {
     const r = await procesar('credicoop');
     expect(r.banco).toBe('Credicoop');
     expect(r.estadisticas.saldos).toBe('verificados');
     expect(ingresos(r)).toEqual([[250000.5, '30711111111'], [120000, '30722222225'], [80000, '30733333339']]);
     expect(gastos(r)).toEqual([
       ['Impuesto al Crédito', 1500], ['Impuesto al Crédito', 720], ['Impuesto al Débito', 1800],
-      ['Comisiones', 30], ['Comisiones', 500], ['IVA sobre comisiones', 14680.05], ['Comisiones', 4375], ['Comisiones', 65000],
+      ['Suscripción Periódico Acción', 2000], ['Impuesto de Sellos', 23335], ['Comisiones', 30], ['Comisiones', 500],
+      ['Intereses', 9074.42], ['IVA sobre comisiones', 14680.05], ['Comisiones', 4375], ['Comisiones', 65000],
     ]);
+    expect(r.reporte.gastos.some((g) => /segurcoop/i.test(g.concepto))).toBe(false);   // los seguros siguen sin ser gasto
     expect(motivos(r)).toEqual([]);   // la transferencia "Igual Tit." es un débito: no aparece
   });
 

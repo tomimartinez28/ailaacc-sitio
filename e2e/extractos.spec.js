@@ -35,7 +35,7 @@ test('procesa los extractos de los cuatro bancos, en orden, y rechaza los que no
     'Frances · 01/07/2026 al 31/07/2026 · 5 movimientos · el banco no informa saldos',
     'NBCH · 02/07/2026 al 31/07/2026 · 11 movimientos · saldos verificados',
     'NBCH · 01/07/2026 al 31/07/2026 · 16 movimientos · saldos verificados',
-    'Credicoop · 02/07/2026 al 31/07/2026 · 14 movimientos · saldos verificados',
+    'Credicoop · 02/07/2026 al 31/07/2026 · 16 movimientos · saldos verificados',
     'Santander · 02/07/2026 al 31/07/2026 · 14 movimientos · saldos verificados',
   ]);
   const chips = (n) => item(page, n).locator('.chip').allTextContents();

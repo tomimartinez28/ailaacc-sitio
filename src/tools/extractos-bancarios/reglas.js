@@ -43,6 +43,9 @@ export const CATEGORIAS_GASTO = [
   { categoria: 'IVA sobre intereses', patron: /iva sobre intereses/ },
   // Credicoop lo llama "IVA - Alicuota Exento"; Santander "Iva 21% reg de transfisc ley 27743"
   { categoria: 'IVA sobre comisiones', patron: /iva sobre comisiones|^iva - alicuota|^iva \d+% reg de transfisc/ },
-  { categoria: 'Intereses', patron: /intereses deudores|interes(es)? por descubierto/ },
+  { categoria: 'Intereses', patron: /intereses deudores|interes(es)? por descubierto|intereses por saldo deudor/ },
   { categoria: 'Comisiones', patron: /^com(\.|ision)|mantenimiento|servicio acreditaciones/ },
+  { categoria: 'Impuesto de Sellos', patron: /impuesto de sellos/ },
+  // No es un gasto bancario en sentido estricto, pero se lo considera así a pedido de administración
+  { categoria: 'Suscripción Periódico Acción', patron: /suscripcion al periodico accion/ },
 ];

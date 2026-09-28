@@ -52,6 +52,8 @@ function credicoop(nombre, { romperSaldo = false } = {}) {
     [15, 'Suscripcion al Periodico Accion', -2000],
     [20, 'Comision por Transferencia B. INTERNET COM. USO-0001', -500],
     [20, 'Servicio acreditaciones automaticas SERV ACRED AUTOMATIC-0001', -30],
+    [20, 'Impuesto de Sellos - Chaco', -23335],
+    [28, 'Intereses por Saldo Deudor', -9074.42],
     [31, 'Com. mantenimiento cuenta', -65000],
     [31, 'Mantenimiento TJ Precargada', -4375],
     [31, 'IVA - Alicuota Exento', -r2((65000 + 4375 + 500 + 30) * 0.21)],
