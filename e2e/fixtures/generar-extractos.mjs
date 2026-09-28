@@ -88,7 +88,8 @@ function nbchCA() {
 }
 
 // ---------- NBCH Cuenta corriente: monto con signo, saldo negativo (descubierto) ----------
-function nbchCC() {
+// Variante: algunas exportaciones llaman "CUIT Cuenta" a la primera columna.
+function nbchCC(nombre = 'extracto-nbch-cc.xlsx', { primeraColumna = 'Cuenta' } = {}) {
   const movs = conSaldos(-300000, [
     [2, 'Pago Cheque de Cámara. Nro. Cheque: 5555555', -200000],
     [2, 'Impuesto al Débito Ley 25413', -1200],
@@ -103,11 +104,12 @@ function nbchCC() {
     [31, 'IVA sobre intereses', -8750.8],
   ]);
   const filas = movs.map(([d, c, imp, s]) => ['CC $ 0000100000000002', serial(d, 7), imp, c, s, '']);
-  guardar('extracto-nbch-cc.xlsx', [['Cuenta', 'Fecha', 'Monto', 'Descripción', 'Saldo', 'Notas'], ...filas]);
+  guardar(nombre, [[primeraColumna, 'Fecha', 'Monto', 'Descripción', 'Saldo', 'Notas'], ...filas]);
 }
 
 // ---------- Santander Cuenta Única: 13 filas de título, importes CA/CC, textos con punto decimal ----------
-function santander() {
+// Variante "vieja": sin columna Referencia, y los movimientos más recientes todavía sin saldo informado.
+function santander(nombre = 'extracto-santander.xlsx', { conReferencia = true, sinSaldoArriba = 0 } = {}) {
   // [dia, concepto, importe, columna 'ca'|'cc', como texto]
   const movs = conSaldos(-470000, ([
     [2, `Pago a proveedores recibido \t Obra social ficticia uno    ${CUIT.osUno} 03 7711160`, 481663, 'ca'],
@@ -125,22 +127,25 @@ function santander() {
     [30, 'Iva 21% reg de transfisc ley27743', -r2((76142.15 + 5289.26 + 26862.21) * 0.21), 'cc', true],
     [31, 'Impuesto ley 25.413 debito 0,6% \t ', -30000, 'cc', true],
   ]).map(([d, c, imp, col, comoTexto = false]) => [d, c, imp, col, comoTexto]));
-  const filas = movs.reverse().map(([d, c, imp, col, comoTexto, s]) => {
+  const filas = movs.reverse().map(([d, c, imp, col, comoTexto, s], i) => {
     const v = comoTexto ? imp.toFixed(2) : imp;
-    return [texto(d, 7), c, '00000001', col === 'ca' ? v : '', col === 'cc' ? v : '', comoTexto ? s.toFixed(2) : s, ''];
+    const saldo = i < sinSaldoArriba ? '' : comoTexto ? s.toFixed(2) : s;
+    return [texto(d, 7), c, ...(conReferencia ? ['00000001'] : []), col === 'ca' ? v : '', col === 'cc' ? v : '', saldo, ''];
   });
   const vacia = ['', '', '', '', '', '', ''];
-  guardar('extracto-santander.xlsx', [
+  guardar(nombre, [
     vacia, vacia, ['', '', '', '', '', 'viernes, 14 de agosto de 2026 - 10:43', ''], vacia, vacia, vacia,
     ['Cuenta', 'Cuenta única 000-000000/0', '', '', '', '', ''], ['Moneda', 'Pesos', '', '', '', '', ''],
     ['Fecha', '01/07/2026 - 31/07/2026', '', '', '', '', ''], vacia, vacia, ['Últimos movimientos', '', '', '', '', '', ''], vacia,
-    ['Fecha', 'Descripción', 'Referencia', 'Caja de Ahorro', 'Cuenta Corriente', 'Saldo', 'Saldo'],
+    conReferencia ? ['Fecha', 'Descripción', 'Referencia', 'Caja de Ahorro', 'Cuenta Corriente', 'Saldo', 'Saldo']
+      : ['Fecha', 'Descripción', 'Caja de Ahorro', 'Cuenta Corriente', 'Saldo', 'Notas'],
     ...filas,
   ]);
 }
 
 // ---------- Francés / BBVA: título en la primera fila, importes texto formato argentino, sin saldo ----------
-function frances() {
+// Variante: el título viene en la segunda fila (la primera vacía).
+function frances(nombre = 'extracto-frances.xlsx', { filaVaciaArriba = false } = {}) {
   const ar = (n) => n.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   const movs = [
     [31, 'Transferencia inmediata', '100 - BANCA ONLINE', -96447.84],
@@ -149,7 +154,8 @@ function frances() {
     [15, 'PAGO CON VISA DEBITO 1234 OP123', '100 - BANCA ONLINE', -59543.07],
     [1, 'INTERESES GANADOS', '295 - SUCURSAL', 143.84],
   ];
-  guardar('extracto-frances.xlsx', [
+  guardar(nombre, [
+    ...(filaVaciaArriba ? [['', '', '', '', '']] : []),
     ['Detalle de Movimientos de Cuenta: CA$ 000-000000/0', '', '', '', ''],
     ['Fecha', 'Concepto', '', 'Importe', 'Notas'],
     ...movs.map(([d, c, o, imp]) => [texto(d, 7), c, o, ar(imp), '']),
@@ -160,6 +166,9 @@ credicoop('extracto-credicoop.xlsx');
 credicoop('extracto-saldo-alterado.xlsx', { romperSaldo: true });
 nbchCA();
 nbchCC();
+nbchCC('extracto-nbch-cc-cuit-cuenta.xlsx', { primeraColumna: 'CUIT Cuenta' });
 santander();
+santander('extracto-santander-sin-referencia.xlsx', { conReferencia: false, sinSaldoArriba: 2 });
 frances();
+frances('extracto-frances-titulo-corrido.xlsx', { filaVaciaArriba: true });
 console.log('extractos ficticios generados en', dir);

@@ -3,8 +3,9 @@ import { MONEDA } from './config.js';
 
 // Cómo se muestra un extracto procesado en la lista
 export function describirExtracto(resultado) {
-  const { movimientos, ingresos, gastos, excluidos, saldos } = resultado.estadisticas;
-  const control = saldos === 'verificados' ? 'saldos verificados' : 'el banco no informa saldos';
+  const { movimientos, ingresos, gastos, excluidos, saldos, sinSaldo = 0 } = resultado.estadisticas;
+  const control = saldos !== 'verificados' ? 'el banco no informa saldos'
+    : sinSaldo ? `saldos verificados (salvo ${sinSaldo} movimientos sin saldo informado)` : 'saldos verificados';
   return {
     meta: `${resultado.banco} · ${resultado.periodo} · ${movimientos} movimientos · ${control}`,
     chips: [

@@ -21,6 +21,16 @@ describe('Extractos bancarios (interfaz)', () => {
     expect(screen.getByRole('button', { name: 'Descargar Excel' })).toBeInTheDocument();
   });
 
+  it('avisa cuando hay movimientos sin saldo informado', () => {
+    render(<ResultList describir={describirExtracto} nombreSalida={salidaExtracto} items={[
+      { id: 1, nombre: 'feb.xlsx', estado: 'listo', resultado: {
+        banco: 'Santander', periodo: '02/02/2026 al 28/02/2026', buffer: new ArrayBuffer(1),
+        estadisticas: { movimientos: 168, ingresos: { cantidad: 1, total: 1 }, gastos: { cantidad: 0, total: 0 }, excluidos: 0, saldos: 'verificados', sinSaldo: 6 },
+      } },
+    ]} />);
+    expect(screen.getByText('Santander · 02/02/2026 al 28/02/2026 · 168 movimientos · saldos verificados (salvo 6 movimientos sin saldo informado)')).toBeInTheDocument();
+  });
+
   it('aparece en el listado como Beta y la página muestra el aviso', async () => {
     const router = createMemoryRouter(rutas, { initialEntries: ['/herramientas'] });
     render(<RouterProvider router={router} />);

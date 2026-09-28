@@ -29,7 +29,8 @@ export async function procesarExtracto(arrayBuffer, _nombreArchivo, opciones) {
       ingresos: { cantidad: reporte.ingresos.length, total: total(reporte.ingresos) },
       gastos: { cantidad: reporte.gastos.length, total: total(reporte.gastos) },
       excluidos: reporte.excluidos.length,
-      saldos,
+      saldos: saldos.estado,
+      sinSaldo: saldos.estado === 'verificados' ? saldos.sinSaldo : 0,   // movimientos sin saldo informado que no se pudieron controlar
     },
   };
 }

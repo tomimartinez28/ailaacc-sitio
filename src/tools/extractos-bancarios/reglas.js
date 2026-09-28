@@ -46,6 +46,8 @@ export const CATEGORIAS_GASTO = [
   { categoria: 'Intereses', patron: /intereses deudores|interes(es)? por descubierto|intereses por saldo deudor/ },
   { categoria: 'Comisiones', patron: /^com(\.|ision)|mantenimiento|servicio acreditaciones/ },
   { categoria: 'Impuesto de Sellos', patron: /impuesto de sellos/ },
+  // Solo el seguro que cobra NBCH en la cuenta corriente; los seguros de Credicoop (Segurcoop, CNP) no son gasto bancario
+  { categoria: 'Seguros', patron: /cargo seguro sd/ },
   // No es un gasto bancario en sentido estricto, pero se lo considera así a pedido de administración
   { categoria: 'Suscripción Periódico Acción', patron: /suscripcion al periodico accion/ },
 ];

@@ -2,6 +2,7 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import ExcelJS from 'exceljs';
+import * as XLSX from 'xlsx';
 import { procesarExtracto } from './index.js';
 import { aFecha, aNumero, cuitValido, extraerCuit, huellaCuit, normalizar } from './utilidades.js';
 import { clasificar, verificarSaldos } from './clasificar.js';
@@ -53,10 +54,15 @@ describe('utilidades', () => {
 describe('integridad', () => {
   const m = (saldo, importe) => ({ fecha: new Date(0), concepto: 'x', importe, saldo });
   it('acepta saldos encadenados en cualquier orden y rechaza si no cierran', () => {
-    expect(verificarSaldos([m(100, 0), m(150, 50), m(120, -30)])).toBe('verificados');
-    expect(verificarSaldos([m(120, -30), m(150, 50), m(100, 0)])).toBe('verificados');
-    expect(verificarSaldos([{ ...m(0, 1), saldo: null }, { ...m(0, 1), saldo: null }])).toBe('no disponible');
+    expect(verificarSaldos([m(100, 0), m(150, 50), m(120, -30)])).toEqual({ estado: 'verificados', sinSaldo: 0 });
+    expect(verificarSaldos([m(120, -30), m(150, 50), m(100, 0)])).toEqual({ estado: 'verificados', sinSaldo: 0 });
+    expect(verificarSaldos([m(null, 1), m(null, 1)]).estado).toBe('no disponible');
     expect(() => verificarSaldos([m(100, 0), m(151, 50)])).toThrow('Los saldos del extracto no cierran');
+  });
+  it('con filas sin saldo, controla la cadena sumando sus importes; solo las de los extremos quedan sin verificar', () => {
+    // cronológico: 100 → (+50 sin saldo) → (−20 sin saldo) → 130 → (+5 sin saldo al final)
+    expect(verificarSaldos([m(100, 0), m(null, 50), m(null, -20), m(130, 0), m(null, 5)])).toEqual({ estado: 'verificados', sinSaldo: 3 });
+    expect(() => verificarSaldos([m(100, 0), m(null, 50), m(131, 0)])).toThrow('Los saldos del extracto no cierran');
   });
   it('un crédito con concepto de gasto (reintegro) resta del gasto y no es ingreso', async () => {
     const r = await clasificar([{ fecha: new Date(0), concepto: 'Com. mantenimiento cuenta reintegro', importe: 500, saldo: null }], 'X');
@@ -89,14 +95,14 @@ describe('extractos por banco', () => {
       'Familiar de la titular', 'Crédito por sentencia judicial', 'Intereses de la cuenta']);
   });
 
-  it('NBCH Cuenta corriente: intereses y su IVA; el seguro no es gasto bancario', async () => {
+  it('NBCH Cuenta corriente: intereses y su IVA, y el cargo de seguro SD', async () => {
     const r = await procesar('nbch-cc');
     expect(ingresos(r)).toEqual([]);
     expect(gastos(r)).toEqual([
-      ['Impuesto al Débito', 1200], ['Impuesto al Débito', 1.94], ['Impuesto al Crédito', 3000], ['Comisiones', 64000],
+      ['Impuesto al Débito', 1200], ['Seguros', 323.22], ['Impuesto al Débito', 1.94], ['Impuesto al Crédito', 3000], ['Comisiones', 64000],
       ['IVA sobre comisiones', 13440], ['Intereses', 41670.47], ['IVA sobre intereses', 8750.8],
     ]);
-    expect(r.reporte.gastos.some((g) => /seguro/i.test(g.concepto))).toBe(false);
+    expect(r.reporte.gastos.find((g) => /seguro sd/i.test(g.concepto)).categoria).toBe('Seguros');
   });
 
   it('Santander: importes con punto decimal, exclusiones y número de operación que no es CUIT', async () => {
@@ -123,6 +129,28 @@ describe('extractos por banco', () => {
     expect(ingresos(r)).toEqual([[8334826.46, '30546741253'], [6202747.94, '30546741253']]);
     expect(gastos(r)).toEqual([]);
     expect(motivos(r)).toEqual(['Intereses de la cuenta']);
+  });
+
+  it('formatos alternativos: Santander sin Referencia y sin saldo arriba, NBCH "CUIT Cuenta", Francés con título corrido', async () => {
+    const pares = [['santander-sin-referencia', 'santander'], ['nbch-cc-cuit-cuenta', 'nbch-cc'], ['frances-titulo-corrido', 'frances']];
+    for (const [variante, original] of pares) {
+      const [a, b] = await Promise.all([procesar(variante), procesar(original)]);
+      expect(a.banco, variante).toBe(b.banco);
+      expect(a.reporte, variante).toEqual(b.reporte);   // mismo resultado que el formato habitual
+    }
+    const santanderViejo = await procesar('santander-sin-referencia');
+    expect(santanderViejo.estadisticas.saldos).toBe('verificados');
+    expect(santanderViejo.estadisticas.sinSaldo).toBe(2);
+  });
+
+  it('una celda de importe ilegible rechaza el extracto indicando el movimiento', async () => {
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet([
+      ['Fecha', 'Concepto', 'Débito', 'Crédito', 'Saldo'],
+      ['09/02/2026', 'Pago interes por saldo en cuenta', 0, ' $ 46,252,00 ', 100],
+    ]), 'Hoja1');
+    const buf = XLSX.write(wb, { type: 'array', bookType: 'xlsx' });
+    await expect(procesarExtracto(buf)).rejects.toThrow('Importe ilegible: " $ 46,252,00 " en el movimiento del 09/02/2026 ("Pago interes por saldo en cuenta")');
   });
 
   it('rechaza un extracto con el saldo alterado y un archivo que no es de un banco soportado', async () => {

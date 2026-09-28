@@ -5,22 +5,29 @@ import { centavos, extraerCuit, fechaLegible, huellaCuit, normalizar, primerDiaD
 
 // ---------- Integridad: el saldo de cada fila debe ser el anterior + el importe ----------
 // Los bancos listan los movimientos del más nuevo al más viejo o al revés: se acepta cualquiera de los dos órdenes.
-// Devuelve 'verificados' o 'no disponible' (el banco no informa saldo). Si no cierra, lanza un error.
+// Si algunas filas no traen saldo (ej. movimientos del día sin procesar), se suman sus importes hasta la próxima
+// fila con saldo, así la cadena se sigue controlando; solo quedan sin verificar las de los extremos.
+// Devuelve { estado: 'verificados' | 'no disponible', sinSaldo } o lanza un error si los saldos no cierran.
 export function verificarSaldos(movimientos) {
-  if (movimientos.length < 2 || movimientos.some((m) => m.saldo === null)) return 'no disponible';
+  const sinSaldo = movimientos.filter((m) => m.saldo === null).length;
+  if (movimientos.length - sinSaldo < 2) return { estado: 'no disponible', sinSaldo };
   const primeraFalla = (viejoArriba) => {
-    for (let i = 1; i < movimientos.length; i++) {
-      const [anterior, actual] = viejoArriba ? [movimientos[i - 1], movimientos[i]] : [movimientos[i], movimientos[i - 1]];
-      if (Math.abs(anterior.saldo + actual.importe - actual.saldo) > 0.005) return i;
+    const orden = viejoArriba ? movimientos : [...movimientos].reverse();
+    let saldoAnterior = null;
+    let pendiente = 0;
+    for (const m of orden) {
+      if (m.saldo === null) { if (saldoAnterior !== null) pendiente += m.importe; continue; }
+      if (saldoAnterior !== null && Math.abs(saldoAnterior + pendiente + m.importe - m.saldo) > 0.005) return m;
+      saldoAnterior = m.saldo;
+      pendiente = 0;
     }
-    return 0;
+    return null;
   };
-  const falla = Math.min(primeraFalla(true), primeraFalla(false));
+  const falla = primeraFalla(true) && primeraFalla(false);
   if (falla) {
-    const m = movimientos[falla];
-    throw new Error(`Los saldos del extracto no cierran (movimiento del ${fechaLegible(m.fecha)}: "${m.concepto}"). Revisá que el archivo no esté modificado.`);
+    throw new Error(`Los saldos del extracto no cierran (movimiento del ${fechaLegible(falla.fecha)}: "${falla.concepto}"). Revisá que el archivo no esté modificado.`);
   }
-  return 'verificados';
+  return { estado: 'verificados', sinSaldo };
 }
 
 // ---------- Reglas ----------
