@@ -8,11 +8,15 @@ import { describirExtracto, salidaExtracto } from './resumen.js';
 import { FORMATOS_ACEPTADOS } from './config.js';
 import './extractos.css';
 
-const AVISO = (
-  <p className="aviso" role="note">
+const AVISO_BETA = (
+  <div className="aviso" role="note" aria-label="Versión beta">
     <Icon name="info" />
-    Herramienta en desarrollo: por ahora podés ver la interfaz, pero todavía no procesa extractos.
-  </p>
+    <p>
+      <strong>Versión BETA.</strong> La herramienta todavía se está ajustando. Si encontrás un error
+      (un movimiento mal clasificado, un CUIT que falta o un extracto que no se lee), documentalo con el
+      nombre del archivo, la fecha, el concepto y el importe del movimiento para poder corregirlo.
+    </p>
+  </div>
 );
 
 export default function ExtractosBancarios() {
@@ -30,10 +34,10 @@ export default function ExtractosBancarios() {
         procesarArchivo={procesarExtracto}
         accept={FORMATOS_ACEPTADOS}
         titulo="Elegí o arrastrá los extractos"
-        descripcion="Extractos bancarios en Excel, CSV o PDF. Podés subir varios a la vez."
+        descripcion="Extractos en Excel (.xlsx) de Santander, Credicoop, Francés o NBCH. Podés subir varios a la vez."
         describir={describirExtracto}
         nombreSalida={salidaExtracto}
-        aviso={AVISO}
+        aviso={AVISO_BETA}
       >
         <Legend />
       </ProcesadorArchivos>

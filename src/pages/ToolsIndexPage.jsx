@@ -4,11 +4,11 @@ import { useDocumentTitle } from '../hooks/useDocumentTitle.js';
 import { ToolHero } from '../tools/components/ToolHero.jsx';
 import { HERRAMIENTAS } from '../tools/registro.js';
 
-export function ToolCard({ slug, nombre, descripcion, etiqueta, icono, tone, enDesarrollo }) {
+export function ToolCard({ slug, nombre, descripcion, etiqueta, icono, tone, estado }) {
   return (
     <Link className={`hcard tone-${tone}`} to={`/herramientas/${slug}`}>
       <span className="ico"><Icon name={icono} /></span>
-      {enDesarrollo && <span className="tool-badge">En desarrollo</span>}
+      {estado && <span className="tool-badge">{estado}</span>}
       <h3>{nombre}</h3>
       <p>{descripcion}</p>
       <span className="more">{etiqueta} · Abrir →</span>

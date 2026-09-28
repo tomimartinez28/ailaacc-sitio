@@ -3,7 +3,7 @@ import { lazy } from 'react';
 // Registro de herramientas del personal. Para sumar una nueva:
 //  1. crear su carpeta en src/tools/<slug>/ con un componente por defecto
 //  2. agregar una entrada acá (se carga de forma diferida: no pesa en la landing)
-//     enDesarrollo: true -> la tarjeta del listado lo indica
+//     estado: 'Beta' (u otro texto corto) -> se muestra como etiqueta en la tarjeta del listado
 export const HERRAMIENTAS = [
   {
     slug: 'control-horas',
@@ -17,11 +17,11 @@ export const HERRAMIENTAS = [
   {
     slug: 'extractos-bancarios',
     nombre: 'Extractos bancarios',
-    descripcion: 'Procesa los extractos de los distintos bancos y genera un Excel con el resumen de ingresos y gastos bancarios.',
+    descripcion: 'Procesa los extractos de Santander, Credicoop, Francés y NBCH y genera un Excel con ingresos y gastos bancarios.',
     etiqueta: 'Bancos',
     icono: 'banco',
     tone: 'green',
-    enDesarrollo: true,
+    estado: 'Beta',
     Componente: lazy(() => import('./extractos-bancarios/ExtractosBancarios.jsx')),
   },
 ];

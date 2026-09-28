@@ -7,7 +7,7 @@ export function CompactFooter({ to = '/', texto = '← Volver al sitio' }) {
       <div className="wrap">
         <div className="foot-bottom">
           <span>{`© ${INSTITUCION.nombre} · ${INSTITUCION.registro} · Provincia del Chaco`}</span>
-          <Link className="foot-staff" to={to}>{texto}</Link>
+          {texto && <Link className="foot-staff" to={to}>{texto}</Link>}
         </div>
       </div>
     </footer>

@@ -4,26 +4,24 @@ Sitio de A.I.L.A.A.C.C. (U.E.G.P. N° 195, Chaco) hecho con **React + Vite + Rea
 
 | Ruta | Para quién | Qué es |
 |---|---|---|
-| `/` | Familias y público | Landing: servicios, sedes, contacto por WhatsApp (o "Sitio en construcción", ver abajo) |
+| `/` | Familias y público | Por ahora redirige a `/herramientas` (ver "Página de inicio") |
 | `/herramientas` | Personal (no se indexa) | Listado de herramientas internas |
 | `/herramientas/control-horas` | Personal | Procesa los reportes del registro dactilar |
-| `/herramientas/extractos-bancarios` | Personal | Resumen de ingresos y gastos bancarios (en desarrollo: solo interfaz) |
+| `/herramientas/extractos-bancarios` | Personal | Reportes de ingresos y gastos bancarios por extracto |
 
 `/control-horas.html` (dirección de la versión anterior) redirige a la herramienta.
 
-## Landing publicada u oculta
+## Página de inicio
 
-La variable `VITE_LANDING_PUBLICA` decide qué se ve en `/`:
+La variable `VITE_INICIO` (en `.env` para producción y `.env.development` para `npm run dev`) decide qué se ve en `/`:
 
-| Archivo | Valor | Resultado |
-|---|---|---|
-| `.env` (lo que se publica) | `false` | Página "Sitio en construcción" con WhatsApp, teléfono y redes. El código de la landing **no se incluye** en el build. |
-| `.env.development` (`npm run dev`) | `true` | Se ve la landing, para seguir trabajando en ella. |
+| Valor | Resultado |
+|---|---|
+| `herramientas` (actual) | `/` lleva directo a `/herramientas`. La landing no está accesible ni incluida en el build. |
+| `construccion` | Página "Sitio en construcción" con WhatsApp, teléfono y redes. |
+| `landing` | La landing completa. |
 
-- Ver la página provisoria en local: `VITE_LANDING_PUBLICA=false npm run dev`
-- **Lanzar la landing:** cambiar `.env` a `VITE_LANDING_PUBLICA=true`, commit y push.
-
-Las herramientas (`/herramientas`) funcionan igual en los dos casos.
+Para ver otro modo localmente sin tocar los archivos: `VITE_INICIO=landing npm run dev`.
 
 ## Uso
 
@@ -58,7 +56,7 @@ Los reportes de prueba de `e2e/fixtures/` tienen datos ficticios (`node e2e/fixt
       tools/components/        piezas comunes: ToolHero, ProcesadorArchivos, DropZone, ResultList, Nota
       tools/hooks/             useProcesarArchivos (estado de la lista de archivos)
       tools/control-horas/     motor/ (lógica de Excel), resumen.js, leyenda y colores propios
-      tools/extractos-bancarios/  interfaz lista; motor/ pendiente (define el formato de resultado esperado)
+      tools/extractos-bancarios/  reglas.js (qué es ingreso/gasto), motor/ (un lector por banco, clasificación, Excel)
       styles/                  sitio.css (tokens y componentes) y herramientas.css
     e2e/                       tests end-to-end y reportes de prueba
 
@@ -75,6 +73,25 @@ Los reportes de prueba de `e2e/fixtures/` tienen datos ficticios (`node e2e/fixt
 Procesa los reportes del registro dactilar (ANVIZ/CrossChex y formato con hoja "Logs") y genera un Excel
 con entradas, salidas y horas por persona y por día. Todo ocurre en el navegador: ningún archivo se envía
 a un servidor. Ajustes (minutos para duplicados, colores, columnas): `src/tools/control-horas/config.js`.
+
+## Extractos bancarios
+
+Lee extractos en Excel de **Santander, Credicoop, Francés (BBVA) y NBCH** y genera, por extracto, un Excel con dos hojas:
+
+- **Ingresos**: Mes (primer día, formato `mmm-yyyy`), Fecha, Monto, Banco, CUIT del Emisor. Excluye traspasos
+  (mismo titular, CUIT de la institución y familia, InvertirOnline, rescates de fondos), cheques rechazados,
+  sentencias judiciales, intereses y bonificaciones.
+- **Gastos**: Mes, Fecha, Monto, Banco, Categoría (Impuesto al Débito/Crédito, Comisiones, IVA sobre comisiones,
+  Intereses, IVA sobre intereses) y Concepto original.
+
+Antes de clasificar verifica que los saldos del extracto cierren fila por fila (salvo Francés, que no informa saldo);
+si no cierran, rechaza el archivo. Las reglas se editan en `src/tools/extractos-bancarios/reglas.js`.
+Los CUIT de **personas** a excluir (titular, familia) no se guardan en claro, porque el repositorio y el sitio son
+públicos: se guarda su huella SHA-256. Para agregar uno: `npm run huella-cuit -- <CUIT>` y copiar la línea en
+`CUITS_PRIVADOS_EXCLUIDOS`. La herramienta está marcada como **Beta** (`estado` en `src/tools/registro.js`).
+Para sumar un banco: agregar su lector en `motor/lectores.js`.
+
+Los extractos de prueba (`e2e/fixtures/extracto-*.xlsx`) son ficticios: `node e2e/fixtures/generar-extractos.mjs`.
 
 ## Publicación
 

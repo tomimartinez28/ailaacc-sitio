@@ -2,7 +2,7 @@
 // Todos devuelven la misma lista de marcas:
 //   { id, nombre, sector, equipo, fecha: "AAAA-MM-DD", min: minutos desde 00:00 }
 
-import { XLSX } from './librerias.js';
+import { XLSX } from '../../lib/librerias.js';
 import { pad, serialAFecha, fechaIso, horaAMinutos, horasDeCelda } from './utilidades.js';
 
 const filasDe = (hoja) => XLSX.utils.sheet_to_json(hoja, { header: 1, defval: '', raw: true });

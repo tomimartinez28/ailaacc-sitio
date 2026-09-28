@@ -56,14 +56,16 @@ export function SimpleHeader({ subtitle, children }) {
   );
 }
 
-// Header de las herramientas: con botón "Volver al sitio".
-export function ToolsHeader({ subtitle }) {
+// Header de las herramientas: con botón "Volver al sitio" si hay un sitio público al que volver.
+export function ToolsHeader({ subtitle, volver = true }) {
   return (
     <SimpleHeader subtitle={subtitle}>
-      <Button variant="ghost" size="sm" to="/" className="nav-back">
-        <Icon name="volver" />
-        Volver al sitio
-      </Button>
+      {volver && (
+        <Button variant="ghost" size="sm" to="/" className="nav-back">
+          <Icon name="volver" />
+          Volver al sitio
+        </Button>
+      )}
     </SimpleHeader>
   );
 }

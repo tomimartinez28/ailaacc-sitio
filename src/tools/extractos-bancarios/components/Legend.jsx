@@ -1,12 +1,12 @@
 import { Muestra, Nota } from '../../components/Nota.jsx';
+import { BANCOS_SOPORTADOS } from '../motor/lectores.js';
 
-// PROVISORIO: se ajusta cuando se defina el formato del Excel de salida
 export function Legend() {
   return (
     <Nota titulo="Qué contiene el Excel">
-      <p><Muestra clase="muestra-ingreso" />Ingresos: los pagos recibidos en la cuenta, con su fecha, concepto e importe.</p>
-      <p><Muestra clase="muestra-gasto" />Gastos bancarios: las comisiones y cargos que cobra el banco.</p>
-      <p>Una hoja de resumen muestra los totales de cada uno por extracto.</p>
+      <p><Muestra clase="muestra-ingreso" />Hoja Ingresos: los pagos recibidos, con Mes, Fecha, Monto, Banco y CUIT del emisor. No incluye traspasos entre cuentas propias, rescates de inversiones, intereses ni bonificaciones.</p>
+      <p><Muestra clase="muestra-gasto" />Hoja Gastos: impuestos al débito y al crédito, comisiones, intereses y el IVA correspondiente, con su categoría y el concepto original del banco.</p>
+      <p>{`Bancos soportados: ${BANCOS_SOPORTADOS.join(', ')}. Antes de procesar se verifica que los saldos del extracto cierren; si no cierran, el archivo se rechaza.`}</p>
     </Nota>
   );
 }

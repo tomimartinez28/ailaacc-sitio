@@ -1,4 +1,4 @@
-// Librerías de planillas. Mismas versiones que usaba la versión HTML (vendor/):
+// Librerías de planillas, compartidas por las herramientas. Mismas versiones que la versión HTML (vendor/):
 // SheetJS 0.20.3 y ExcelJS 4.4.0. Se importan acá para que el resto del motor no dependa de globales.
 
 import * as XLSX from 'xlsx';

@@ -28,6 +28,6 @@ export default defineConfig({
     setupFiles: ['./src/test/setup.js'],
     include: ['src/**/*.test.{js,jsx}'],
     css: false,
-    env: { VITE_LANDING_PUBLICA: 'true' },
+    env: { VITE_INICIO: 'landing' },   // los tests de componentes cubren la landing
   },
 });

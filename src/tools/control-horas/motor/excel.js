@@ -1,7 +1,7 @@
 // Genera el Excel de salida con ExcelJS.
 // Hojas: Resumen, Incidencias y una hoja por persona.
 
-import { ExcelJS } from './librerias.js';
+import { ExcelJS } from '../../lib/librerias.js';
 import { COLORES, FUENTE, PARES_MINIMOS, MINUTOS_DUPLICADO } from '../config.js';
 import { DIAS_SEMANA, fechaIso, fechaLegible, minutosAHora } from './utilidades.js';
 

@@ -8,7 +8,7 @@ import { LOGO } from '../lib/asset.js';
 import { abrirWhatsApp, MENSAJE_RAPIDO } from '../lib/whatsapp.js';
 import { CONTACTO, INSTITUCION, REDES } from '../data/institucion.js';
 
-// Página provisoria mientras la landing no está publicada (VITE_LANDING_PUBLICA=false en .env).
+// Página provisoria mientras la landing no está publicada (VITE_INICIO=construccion en .env).
 export default function EnConstruccionPage() {
   useDocumentTitle('AILAACC Chaco — Sitio en construcción');
   useMetaTag('robots', 'noindex'); // que los buscadores no guarden esta versión provisoria

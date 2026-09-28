@@ -3,15 +3,17 @@ import { MONEDA } from './config.js';
 
 // Cómo se muestra un extracto procesado en la lista
 export function describirExtracto(resultado) {
-  const { movimientos, ingresos, gastos } = resultado.estadisticas;
+  const { movimientos, ingresos, gastos, excluidos, saldos } = resultado.estadisticas;
+  const control = saldos === 'verificados' ? 'saldos verificados' : 'el banco no informa saldos';
   return {
-    meta: `${resultado.banco} · ${resultado.periodo} · ${movimientos} movimientos`,
+    meta: `${resultado.banco} · ${resultado.periodo} · ${movimientos} movimientos · ${control}`,
     chips: [
       { clase: 'ingreso', texto: `${ingresos.cantidad} ingresos · ${MONEDA.format(ingresos.total)}` },
       { clase: 'gasto', texto: `${gastos.cantidad} gastos bancarios · ${MONEDA.format(gastos.total)}` },
+      ...(excluidos ? [{ clase: 'excluido', texto: `${excluidos} créditos excluidos (traspasos y otros)` }] : []),
     ],
   };
 }
 
-// "extracto-agosto.pdf" -> "extracto-agosto_resumen.xlsx"
+// "extracto-agosto.xlsx" -> "extracto-agosto_resumen.xlsx"
 export const salidaExtracto = (nombre) => nombreDeSalida(nombre, 'resumen');

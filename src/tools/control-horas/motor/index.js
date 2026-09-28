@@ -1,6 +1,6 @@
 // Punto de entrada del motor: archivo -> Excel procesado.
 
-import { XLSX } from './librerias.js';
+import { XLSX } from '../../lib/librerias.js';
 import { detectarFormato } from './lectores.js';
 import { agruparPorPersona } from './reglas.js';
 import { generarExcel } from './excel.js';
