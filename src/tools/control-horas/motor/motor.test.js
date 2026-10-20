@@ -2,6 +2,7 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import ExcelJS from 'exceljs';
+import JSZip from 'jszip';
 import { procesarArchivo } from './index.js';
 import { agruparPorPersona, separarDuplicadas } from './reglas.js';
 import { horaAMinutos, minutosAHora, horasDeCelda } from './utilidades.js';
@@ -55,6 +56,25 @@ describe('procesarArchivo (motor completo)', () => {
       const otra = wb.worksheets[i];
       hoja.eachRow((fila, n) => expect(otra.getRow(n).values).toEqual(fila.values));
     });
+  });
+
+  it('los enlaces a otras hojas usan el formato estándar (los que Google Sheets entiende)', async () => {
+    const r = await procesarArchivo(fixture('anviz.xlsx'), 'anviz.xlsx');
+    const zip = await JSZip.loadAsync(r.buffer);
+    const leer = (ruta) => zip.file(ruta).async('string');
+    const hojas = Object.keys(zip.files).filter((n) => /^xl\/worksheets\/sheet\d+\.xml$/.test(n));
+    let enlaces = 0;
+    for (const ruta of hojas) {
+      const xml = await leer(ruta);
+      enlaces += (xml.match(/<hyperlink /g) || []).length;
+      expect(xml).not.toMatch(/<hyperlink [^>]*r:id=/);
+      expect(xml).not.toMatch(/location="#/);
+      const rels = zip.file(ruta.replace('worksheets/', 'worksheets/_rels/') + '.rels');
+      if (rels) expect(await rels.async('string')).not.toContain('relationships/hyperlink');
+    }
+    // Resumen: 1 por persona; cada hoja de persona: "Volver al resumen"; Incidencias: 1 por día con problemas
+    expect(enlaces).toBe(3 + 3 + r.estadisticas.diasImpares + r.estadisticas.marcasDuplicadas);
+    expect(await leer('xl/worksheets/sheet3.xml')).toContain(`<hyperlink ref="A3" location="&apos;Resumen&apos;!A1"/>`);
   });
 
   it('formato B (hoja Logs)', async () => {

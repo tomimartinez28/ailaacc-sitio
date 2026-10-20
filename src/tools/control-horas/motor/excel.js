@@ -1,7 +1,7 @@
 // Genera el Excel de salida con ExcelJS.
 // Hojas: Resumen, Incidencias y una hoja por persona.
 
-import { ExcelJS } from '../../lib/librerias.js';
+import { ExcelJS, JSZip } from '../../lib/librerias.js';
 import { COLORES, FUENTE, PARES_MINIMOS, MINUTOS_DUPLICADO } from '../config.js';
 import { DIAS_SEMANA, fechaIso, fechaLegible, minutosAHora } from './utilidades.js';
 
@@ -256,6 +256,29 @@ function completarIncidencias(hoja, incidencias) {
   hoja.pageSetup = { orientation: 'landscape', fitToPage: true, fitToWidth: 1, fitToHeight: 0 };
 }
 
+// ---------- enlaces internos compatibles con Google Sheets ----------
+// ExcelJS guarda cada enlace a otra hoja como una relación "externa" con destino "#'Hoja'!A1". Excel lo tolera,
+// pero Google Sheets lo rompe al importar. Se reescriben al formato estándar: <hyperlink ref location="'Hoja'!A1"/>
+// sin relación.
+async function corregirEnlacesInternos(buffer) {
+  const zip = await JSZip.loadAsync(buffer);
+  const hojas = Object.keys(zip.files).filter((n) => /^xl\/worksheets\/sheet\d+\.xml$/.test(n));
+  for (const ruta of hojas) {
+    const quitar = [];
+    const xml = (await zip.file(ruta).async('string')).replace(
+      /<hyperlink ref="([^"]+)" r:id="([^"]+)" location="#([^"]+)"\/>/g,
+      (_, ref, rId, destino) => { quitar.push(rId); return `<hyperlink ref="${ref}" location="${destino}"/>`; },
+    );
+    if (!quitar.length) continue;
+    zip.file(ruta, xml);
+    const rutaRels = ruta.replace('worksheets/', 'worksheets/_rels/') + '.rels';
+    const rels = (await zip.file(rutaRels).async('string'))
+      .replace(/<Relationship Id="([^"]+)"[^>]*\/>/g, (rel, id) => (quitar.includes(id) ? '' : rel));
+    zip.file(rutaRels, rels);
+  }
+  return zip.generateAsync({ type: 'arraybuffer', compression: 'DEFLATE' });
+}
+
 // ---------- función principal ----------
 export async function generarExcel(personas, meta) {
   const libro = new ExcelJS.Workbook();
@@ -280,5 +303,5 @@ export async function generarExcel(personas, meta) {
     diasImpares: incidencias.filter((x) => x.tipo === 'Marcas impares').length,
     marcasDuplicadas: personas.reduce((a, p) => a + [...p.dias.values()].reduce((b, d) => b + d.duplicadas.length, 0), 0),
   };
-  return { buffer: await libro.xlsx.writeBuffer(), estadisticas };
+  return { buffer: await corregirEnlacesInternos(await libro.xlsx.writeBuffer()), estadisticas };
 }
