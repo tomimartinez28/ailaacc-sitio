@@ -40,7 +40,7 @@ test('procesa los extractos de los cuatro bancos, en orden, y rechaza los que no
   ]);
   const chips = (n) => item(page, n).locator('.chip').allTextContents();
   expect((await chips('extracto-nbch-ca.xlsx')).map((t) => t.replace(/\s/g, ' '))).toEqual([
-    '5 ingresos · $ 5.660.000,35', '3 gastos bancarios · $ 19.174,90', '5 créditos excluidos (traspasos y otros)',
+    '5 ingresos · $ 5.660.000,35', '3 gastos bancarios · $ 15.520,00', '5 créditos excluidos (traspasos y otros)',
   ]);
   await expect(item(page, 'extracto-saldo-alterado.xlsx').getByRole('button')).toHaveCount(0);
 });
@@ -55,14 +55,14 @@ test('el Excel descargado tiene las hojas Ingresos y Gastos con los datos correc
   await wb.xlsx.load(readFileSync(await descarga.path()));
   const filas = (hoja) => wb.getWorksheet(hoja).getSheetValues().slice(2).map((r) => r.slice(1).map((v) => (v instanceof Date ? v.toISOString().slice(0, 10) : v)));
   expect(filas('Ingresos')).toEqual([
-    ['2026-07-01', '2026-07-02', 481663, 'Santander', '30711111111'],
-    ['2026-07-01', '2026-07-14', 682187.06, 'Santander', '30722222225'],
+    ['2026-07-01', '2026-07-02', 400000, 'Santander', '30711111111'],
+    ['2026-07-01', '2026-07-14', 600000.5, 'Santander', '30722222225'],
     ['2026-07-01', '2026-07-17', 500000, 'Santander', '27111111117'],   // titular FICTICIA: las reglas reales no la conocen
-    ['2026-07-01', '2026-07-27', 236174.58, 'Santander', '30733333339'],
+    ['2026-07-01', '2026-07-27', 250000.75, 'Santander', '30733333339'],
   ]);
   expect(filas('Gastos').map((f) => f.slice(2, 5))).toEqual([
-    [22741.66, 'Santander', 'IVA sobre comisiones'], [26862.21, 'Santander', 'Intereses'],
-    [5289.26, 'Santander', 'Comisiones'], [76142.15, 'Santander', 'Comisiones'], [30000, 'Santander', 'Impuesto al Débito'],
+    [17640, 'Santander', 'IVA sobre comisiones'], [20000, 'Santander', 'Intereses'],
+    [4000, 'Santander', 'Comisiones'], [60000, 'Santander', 'Comisiones'], [30000, 'Santander', 'Impuesto al Débito'],
   ]);
   expect(wb.getWorksheet('Ingresos').getCell('A2').numFmt).toBe('mmm-yyyy');
 });

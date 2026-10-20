@@ -6,8 +6,8 @@ export const normalizar = (texto) => String(texto ?? '')
   .toLowerCase().replace(/\s+/g, ' ').trim();
 
 // Importe de una celda -> número. Soporta:
-//   número de Excel            -96447.84
-//   texto formato argentino    "-96.447,84"  (BBVA)
+//   número de Excel            -80000.5
+//   texto formato argentino    "-80.000,50"  (BBVA)
 //   texto con punto decimal    "-30000.00"   (Santander)
 //   celda vacía                ""  -> 0
 export function aNumero(valor) {

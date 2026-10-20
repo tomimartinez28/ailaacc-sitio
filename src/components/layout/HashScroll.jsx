@@ -6,7 +6,9 @@ export function HashScroll() {
   const { hash, pathname } = useLocation();
   useEffect(() => {
     if (!hash) return;
-    const el = document.getElementById(decodeURIComponent(hash.slice(1)));
+    let id;
+    try { id = decodeURIComponent(hash.slice(1)); } catch { return; }   // #ancla mal codificada (ej. "#%E0"): se ignora
+    const el = document.getElementById(id);
     if (el) requestAnimationFrame(() => el.scrollIntoView());
   }, [hash, pathname]);
   return null;

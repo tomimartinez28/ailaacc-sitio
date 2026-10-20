@@ -23,10 +23,10 @@ const motivos = (r) => r.reporte.excluidos.map((x) => x.motivo);
 
 describe('utilidades', () => {
   it('lee importes en los tres formatos que usan los bancos', () => {
-    expect(aNumero(-96447.84)).toBe(-96447.84);
-    expect(aNumero('-96.447,84')).toBe(-96447.84);   // Francés
+    expect(aNumero(-80000.5)).toBe(-80000.5);
+    expect(aNumero('-80.000,50')).toBe(-80000.5);   // Francés
     expect(aNumero('-30000.00')).toBe(-30000);        // Santander (no es -3.000.000)
-    expect(aNumero('6.202.747,94')).toBe(6202747.94);
+    expect(aNumero('5.000.000,25')).toBe(5000000.25);
     expect(aNumero('')).toBe(0);
     expect(() => aNumero('abc')).toThrow('Importe ilegible');
   });
@@ -37,8 +37,8 @@ describe('utilidades', () => {
   it('acepta solo CUIT con dígito verificador correcto', () => {
     expect(cuitValido('30999175461')).toBe(true);
     expect(cuitValido('30999175462')).toBe(false);
-    expect(extraerCuit('Cta discapacida 30654855168 202 62700650043')).toBe('30654855168');
-    expect(extraerCuit('Nro 62700650043 CBU 0110599520000055518882')).toBe('');
+    expect(extraerCuit('Obra social tres 30733333339 202 12345678901')).toBe('30733333339');
+    expect(extraerCuit('Nro 12345678901 CBU 0000003100000000000001')).toBe('');
     expect(normalizar('  Débito\tLEY ')).toBe('debito ley');
   });
   it('la huella de un CUIT es estable y distinta para cada CUIT', async () => {
@@ -79,8 +79,8 @@ describe('extractos por banco', () => {
     expect(ingresos(r)).toEqual([[250000.5, '30711111111'], [120000, '30722222225'], [80000, '30733333339']]);
     expect(gastos(r)).toEqual([
       ['Impuesto al Crédito', 1500], ['Impuesto al Crédito', 720], ['Impuesto al Débito', 1800],
-      ['Suscripción Periódico Acción', 2000], ['Impuesto de Sellos', 23335], ['Comisiones', 30], ['Comisiones', 500],
-      ['Intereses', 9074.42], ['IVA sobre comisiones', 14680.05], ['Comisiones', 4375], ['Comisiones', 65000],
+      ['Suscripción Periódico Acción', 2000], ['Impuesto de Sellos', 12345], ['Comisiones', 30], ['Comisiones', 500],
+      ['Intereses', 8123.45], ['IVA sobre comisiones', 11451.3], ['Comisiones', 4000], ['Comisiones', 50000],
     ]);
     expect(r.reporte.gastos.some((g) => /segurcoop/i.test(g.concepto))).toBe(false);   // los seguros siguen sin ser gasto
     expect(motivos(r)).toEqual([]);   // la transferencia "Igual Tit." es un débito: no aparece
@@ -90,7 +90,7 @@ describe('extractos por banco', () => {
     const r = await procesar('nbch-ca');
     expect(r.banco).toBe('NBCH');
     expect(ingresos(r)).toEqual([[350000.25, '30744444442'], [150000, ''], [4500000, '30999175461'], [610000.1, '30755555556']]);
-    expect(gastos(r)).toEqual([['Comisiones', 14690], ['IVA sobre comisiones', 3084.9], ['Comisiones', 1400]]);
+    expect(gastos(r)).toEqual([['Comisiones', 12000], ['IVA sobre comisiones', 2520], ['Comisiones', 1000]]);
     expect(motivos(r)).toEqual(['Cheque rechazado', 'Cuenta propia (titular)', 'InvertirOnline (traspaso de inversiones)',
       'Familiar de la titular', 'Crédito por sentencia judicial', 'Intereses de la cuenta']);
   });
@@ -99,8 +99,8 @@ describe('extractos por banco', () => {
     const r = await procesar('nbch-cc');
     expect(ingresos(r)).toEqual([]);
     expect(gastos(r)).toEqual([
-      ['Impuesto al Débito', 1200], ['Seguros', 323.22], ['Impuesto al Débito', 1.94], ['Impuesto al Crédito', 3000], ['Comisiones', 64000],
-      ['IVA sobre comisiones', 13440], ['Intereses', 41670.47], ['IVA sobre intereses', 8750.8],
+      ['Impuesto al Débito', 1200], ['Seguros', 250.5], ['Impuesto al Débito', 1.5], ['Impuesto al Crédito', 3000], ['Comisiones', 50000],
+      ['IVA sobre comisiones', 10500], ['Intereses', 30000], ['IVA sobre intereses', 6300],
     ]);
     expect(r.reporte.gastos.find((g) => /seguro sd/i.test(g.concepto)).categoria).toBe('Seguros');
   });
@@ -108,9 +108,9 @@ describe('extractos por banco', () => {
   it('Santander: importes con punto decimal, exclusiones y número de operación que no es CUIT', async () => {
     const r = await procesar('santander');
     expect(r.estadisticas.saldos).toBe('verificados');
-    expect(ingresos(r)).toEqual([[481663, '30711111111'], [682187.06, '30722222225'], [236174.58, '30733333339']]);
+    expect(ingresos(r)).toEqual([[400000, '30711111111'], [600000.5, '30722222225'], [250000.75, '30733333339']]);
     expect(gastos(r)).toEqual([
-      ['IVA sobre comisiones', 22741.66], ['Intereses', 26862.21], ['Comisiones', 5289.26], ['Comisiones', 76142.15], ['Impuesto al Débito', 30000],
+      ['IVA sobre comisiones', 17640], ['Intereses', 20000], ['Comisiones', 4000], ['Comisiones', 60000], ['Impuesto al Débito', 30000],
     ]);
     expect(motivos(r)).toEqual(['InvertirOnline (traspaso de inversiones)', 'Intereses de la cuenta', 'Bonificación o promoción',
       'Cuenta propia (titular)', 'Rescate de fondos (traspaso)']);
@@ -126,7 +126,7 @@ describe('extractos por banco', () => {
     const r = await procesar('frances');
     expect(r.banco).toBe('Frances');
     expect(r.estadisticas.saldos).toBe('no disponible');
-    expect(ingresos(r)).toEqual([[8334826.46, '30546741253'], [6202747.94, '30546741253']]);
+    expect(ingresos(r)).toEqual([[7000000.75, '30546741253'], [5000000.25, '30546741253']]);
     expect(gastos(r)).toEqual([]);
     expect(motivos(r)).toEqual(['Intereses de la cuenta']);
   });
@@ -179,6 +179,6 @@ describe('Excel de salida', () => {
     expect(ing.rowCount).toBe(5);   // encabezado + 4 ingresos, sin fila de totales
     const gas = wb.getWorksheet('Gastos');
     expect(gas.getRow(1).values.slice(1)).toEqual(['Mes', 'Fecha', 'Monto', 'Banco', 'Categoría', 'Concepto original']);
-    expect(gas.getRow(2).values.slice(3)).toEqual([14690, 'NBCH', 'Comisiones', 'Comisión Gestión Depósito Cheque de Terceros']);
+    expect(gas.getRow(2).values.slice(3)).toEqual([12000, 'NBCH', 'Comisiones', 'Comisión Gestión Depósito Cheque de Terceros']);
   });
 });
