@@ -74,7 +74,17 @@ describe('procesarArchivo (motor completo)', () => {
     }
     // Resumen: 1 por persona; cada hoja de persona: "Volver al resumen"; Incidencias: 1 por día con problemas
     expect(enlaces).toBe(3 + 3 + r.estadisticas.diasImpares + r.estadisticas.marcasDuplicadas);
-    expect(await leer('xl/worksheets/sheet3.xml')).toContain(`<hyperlink ref="A3" location="&apos;Resumen&apos;!A1"/>`);
+    expect(await leer('xl/worksheets/sheet3.xml')).toContain(`<hyperlink ref="A3" location="&apos;Resumen&apos;!A1" display="← Volver al resumen"/>`);
+
+    // Cada enlace lleva como display el texto de su celda (si no, Google Sheets muestra "#gid=...")
+    const wb = new ExcelJS.Workbook();
+    await wb.xlsx.load(r.buffer);
+    const textoDe = (hoja, ref) => wb.getWorksheet(hoja).getCell(ref).text;
+    const resumen = await leer('xl/worksheets/sheet1.xml');
+    const displays = [...resumen.matchAll(/<hyperlink ref="([A-Z]+\d+)" location="[^"]+" display="([^"]+)"\/>/g)];
+    expect(displays).toHaveLength(3);
+    for (const [, ref, texto] of displays) expect(texto.replace(/&apos;/g, "'")).toBe(textoDe('Resumen', ref));
+    expect(await leer('xl/worksheets/sheet2.xml')).not.toMatch(/<hyperlink (?![^>]*display="Ver día")/);
   });
 
   it('formato B (hoja Logs)', async () => {

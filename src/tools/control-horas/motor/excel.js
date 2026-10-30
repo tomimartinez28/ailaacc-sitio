@@ -258,16 +258,34 @@ function completarIncidencias(hoja, incidencias) {
 
 // ---------- enlaces internos compatibles con Google Sheets ----------
 // ExcelJS guarda cada enlace a otra hoja como una relación "externa" con destino "#'Hoja'!A1". Excel lo tolera,
-// pero Google Sheets lo rompe al importar. Se reescriben al formato estándar: <hyperlink ref location="'Hoja'!A1"/>
-// sin relación.
-async function corregirEnlacesInternos(buffer) {
+// pero Google Sheets lo rompe al importar. Se reescriben al formato estándar, sin relación:
+//   <hyperlink ref location="'Hoja'!A1" display="texto de la celda"/>
+// display hace falta: sin él, Google Sheets reemplaza el texto de la celda por "#gid=...".
+const escaparXml = (texto) => String(texto).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+
+// Texto de cada celda con enlace, por archivo de hoja (ExcelJS guarda la hoja con id N en sheetN.xml)
+function textosDeEnlaces(libro) {
+  const textos = new Map();
+  for (const hoja of libro.worksheets) {
+    const porCelda = new Map();
+    hoja.eachRow((fila) => fila.eachCell((c) => { if (c.value?.hyperlink) porCelda.set(c.address, c.value.text); }));
+    textos.set(`xl/worksheets/sheet${hoja.id}.xml`, porCelda);
+  }
+  return textos;
+}
+
+async function corregirEnlacesInternos(buffer, textos) {
   const zip = await JSZip.loadAsync(buffer);
   const hojas = Object.keys(zip.files).filter((n) => /^xl\/worksheets\/sheet\d+\.xml$/.test(n));
   for (const ruta of hojas) {
     const quitar = [];
     const xml = (await zip.file(ruta).async('string')).replace(
       /<hyperlink ref="([^"]+)" r:id="([^"]+)" location="#([^"]+)"\/>/g,
-      (_, ref, rId, destino) => { quitar.push(rId); return `<hyperlink ref="${ref}" location="${destino}"/>`; },
+      (_, ref, rId, destino) => {
+        quitar.push(rId);
+        const texto = textos.get(ruta)?.get(ref);
+        return `<hyperlink ref="${ref}" location="${destino}"${texto ? ` display="${escaparXml(texto)}"` : ''}/>`;
+      },
     );
     if (!quitar.length) continue;
     zip.file(ruta, xml);
@@ -303,5 +321,5 @@ export async function generarExcel(personas, meta) {
     diasImpares: incidencias.filter((x) => x.tipo === 'Marcas impares').length,
     marcasDuplicadas: personas.reduce((a, p) => a + [...p.dias.values()].reduce((b, d) => b + d.duplicadas.length, 0), 0),
   };
-  return { buffer: await corregirEnlacesInternos(await libro.xlsx.writeBuffer()), estadisticas };
+  return { buffer: await corregirEnlacesInternos(await libro.xlsx.writeBuffer(), textosDeEnlaces(libro)), estadisticas };
 }
