@@ -17,7 +17,7 @@ export const HERRAMIENTAS = [
   {
     slug: 'extractos-bancarios',
     nombre: 'Extractos bancarios',
-    descripcion: 'Procesa los extractos de Santander, Credicoop, Francés y NBCH y genera un Excel con ingresos y gastos bancarios.',
+    descripcion: 'Procesa los extractos de Santander, Credicoop, Francés, NBCH y Galicia y genera un Excel con ingresos y gastos bancarios.',
     etiqueta: 'Bancos',
     icono: 'banco',
     tone: 'green',
