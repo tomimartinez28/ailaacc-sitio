@@ -76,11 +76,11 @@ a un servidor. Ajustes (minutos para duplicados, colores, columnas): `src/tools/
 
 ## Extractos bancarios
 
-Lee extractos en Excel de **Santander, Credicoop, Francés (BBVA) y NBCH** y genera, por extracto, un Excel con dos hojas:
+Lee extractos en Excel de **Santander, Credicoop, Francés (BBVA), NBCH y Galicia** (este último en `.xlsm`) y genera, por extracto, un Excel con dos hojas:
 
 - **Ingresos**: Mes (primer día, formato `mmm-yyyy`), Fecha, Monto, Banco, CUIT del Emisor. Excluye traspasos
   (mismo titular, CUIT de la institución y familia, InvertirOnline, rescates de fondos), cheques rechazados,
-  sentencias judiciales, intereses y bonificaciones.
+  sentencias judiciales, intereses, bonificaciones y reintegros de promociones.
 - **Gastos**: Mes, Fecha, Monto, Banco, Categoría (Impuesto al Débito/Crédito, Comisiones, IVA sobre comisiones,
   Intereses, IVA sobre intereses) y Concepto original.
 
@@ -91,7 +91,7 @@ públicos: se guarda su huella SHA-256. Para agregar uno: `npm run huella-cuit -
 `CUITS_PRIVADOS_EXCLUIDOS`. La herramienta está marcada como **Beta** (`estado` en `src/tools/registro.js`).
 Para sumar un banco: agregar su lector en `motor/lectores.js`.
 
-Los extractos de prueba (`e2e/fixtures/extracto-*.xlsx`) son ficticios: `node e2e/fixtures/generar-extractos.mjs`.
+Los extractos de prueba (`e2e/fixtures/extracto-*.xlsx` y `.xlsm`) son ficticios: `node e2e/fixtures/generar-extractos.mjs`.
 
 ## Publicación
 

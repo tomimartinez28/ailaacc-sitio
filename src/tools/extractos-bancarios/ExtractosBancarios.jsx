@@ -34,7 +34,7 @@ export default function ExtractosBancarios() {
         procesarArchivo={procesarExtracto}
         accept={FORMATOS_ACEPTADOS}
         titulo="Elegí o arrastrá los extractos"
-        descripcion="Extractos en Excel (.xlsx) de Santander, Credicoop, Francés o NBCH. Podés subir varios a la vez."
+        descripcion="Extractos en Excel (.xlsx o .xlsm) de Santander, Credicoop, Francés, NBCH o Galicia. Podés subir varios a la vez."
         describir={describirExtracto}
         nombreSalida={salidaExtracto}
         aviso={AVISO_BETA}

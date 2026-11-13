@@ -43,6 +43,6 @@ describe('Extractos bancarios (interfaz)', () => {
     expect(await screen.findByRole('heading', { level: 1, name: 'Procesamiento de extractos bancarios' })).toBeInTheDocument();
     await waitFor(() => expect(document.title).toBe('Extractos bancarios – AILAACC'));
     expect(screen.getByRole('note', { name: 'Versión beta' })).toHaveTextContent(/^Versión BETA\. .*documentalo con el nombre del archivo/);
-    expect(document.getElementById('archivos')).toHaveAttribute('accept', '.xlsx');
+    expect(document.getElementById('archivos')).toHaveAttribute('accept', '.xlsx,.xlsm');
   });
 });

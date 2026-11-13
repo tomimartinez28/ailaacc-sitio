@@ -100,8 +100,25 @@ const frances = {
   },
 };
 
-export const LECTORES = [santander, nbch, credicoop, frances];
-export const BANCOS_SOPORTADOS = ['Santander', 'NBCH', 'Credicoop', 'Francés'];
+// ---------- Galicia (Caja de Ahorro): columnas Débito (ya en negativo) y Crédito, archivo .xlsm ----------
+// El movimiento ocupa varias líneas en la misma celda (tipo, nombre, CUIT, CBU...): se une en una sola.
+// Después de los movimientos la hoja trae cientos de filas vacías (se descartan por no tener fecha).
+const galicia = {
+  banco: 'Galicia',
+  reconoce: (filas) => buscarEncabezado(filas, ['fecha', 'movimiento', 'debito', 'credito', 'saldo parcial']),
+  leer(filas, enc) {
+    const c = { fecha: enc.columna('fecha'), mov: enc.columna('movimiento'), debito: enc.columna('debito'), credito: enc.columna('credito'), saldo: enc.columna('saldo parcial') };
+    return leerFilas(conFecha(filas, enc.fila, c.fecha), c.fecha, c.mov, (r) => ({
+      fecha: aFecha(r[c.fecha]),
+      concepto: limpiar(r[c.mov]),
+      importe: aNumero(r[c.credito]) - Math.abs(aNumero(r[c.debito])),
+      saldo: saldoDe(r[c.saldo]),
+    }));
+  },
+};
+
+export const LECTORES = [santander, nbch, credicoop, frances, galicia];
+export const BANCOS_SOPORTADOS = ['Santander', 'NBCH', 'Credicoop', 'Francés', 'Galicia'];
 
 // Libro de Excel -> { banco, movimientos }
 export function leerExtracto(libro) {

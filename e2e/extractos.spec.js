@@ -18,20 +18,21 @@ test('desde el listado se abre la herramienta de extractos', async ({ page }) =>
   await expect(page).toHaveURL(/\/herramientas\/extractos-bancarios$/);
   await expect(page).toHaveTitle('Extractos bancarios – AILAACC');
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('Procesamiento de extractos bancarios');
-  await expect(page.locator('#archivos')).toHaveAttribute('accept', '.xlsx');
+  await expect(page.locator('#archivos')).toHaveAttribute('accept', '.xlsx,.xlsm');
   await expect(page.getByRole('note', { name: 'Versión beta' })).toBeVisible();
   sinErrores();
 });
 
-test('procesa los extractos de los cuatro bancos, en orden, y rechaza los que no corresponden', async ({ page }) => {
+test('procesa los extractos de los cinco bancos, en orden, y rechaza los que no corresponden', async ({ page }) => {
   await page.goto('./herramientas/extractos-bancarios');
   const archivos = ['extracto-santander.xlsx', 'extracto-credicoop.xlsx', 'extracto-nbch-ca.xlsx', 'extracto-nbch-cc.xlsx',
-    'extracto-frances.xlsx', 'extracto-saldo-alterado.xlsx', 'invalido.xlsx'];
+    'extracto-frances.xlsx', 'extracto-galicia.xlsm', 'extracto-saldo-alterado.xlsx', 'invalido.xlsx'];
   await page.locator('#archivos').setInputFiles(archivos.map(fixture));
   await expect(page.locator('#lista .item h2')).toHaveText([...archivos].reverse());
   await expect(page.locator('#lista .item .meta')).toHaveText([
-    /^No se reconoce el formato del extracto\. Bancos soportados: Santander, NBCH, Credicoop, Francés\.$/,
+    /^No se reconoce el formato del extracto\. Bancos soportados: Santander, NBCH, Credicoop, Francés, Galicia\.$/,
     /^Los saldos del extracto no cierran/,
+    'Galicia · 01/07/2026 al 25/07/2026 · 11 movimientos · saldos verificados',
     'Frances · 01/07/2026 al 31/07/2026 · 5 movimientos · el banco no informa saldos',
     'NBCH · 02/07/2026 al 31/07/2026 · 11 movimientos · saldos verificados',
     'NBCH · 01/07/2026 al 31/07/2026 · 16 movimientos · saldos verificados',

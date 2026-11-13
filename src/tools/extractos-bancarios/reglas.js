@@ -20,11 +20,13 @@ export const CUITS_PRIVADOS_EXCLUIDOS = {
 
 // Créditos que no son pagos recibidos, según el concepto
 export const INGRESOS_EXCLUIDOS = [
-  { patron: /mismo titular|igual tit/, motivo: 'Transferencia entre cuentas propias' },
+  // Galicia: "Transferencia de cuenta propia"
+  { patron: /mismo titular|igual tit|cuenta propia|ctas propias/, motivo: 'Transferencia entre cuentas propias' },
   { patron: /rescate (de )?fondos/, motivo: 'Rescate de fondos (traspaso)' },
   { patron: /sentencia judicial/, motivo: 'Crédito por sentencia judicial' },
-  { patron: /rendimientos? obtenidos?|intereses? ganados?|interes(es)? por saldo/, motivo: 'Intereses de la cuenta' },
-  { patron: /bonificacion/, motivo: 'Bonificación o promoción' },
+  { patron: /rendimientos? obtenidos?|intereses? ganados?|interes(es)? por saldo|interes capitalizado/, motivo: 'Intereses de la cuenta' },
+  // Galicia: "Reintegro promoción Galicia" (devoluciones de compras con tarjeta)
+  { patron: /bonificacion|reintegro promo/, motivo: 'Bonificación o promoción' },
 ];
 
 // Conceptos que no traen el CUIT en el detalle: se les asigna uno fijo.
@@ -38,8 +40,9 @@ export const CUIT_POR_CONCEPTO = [
 // Se evalúan en orden: gana la primera categoría que coincide.
 // Débitos que no coinciden con ninguna (transferencias, pagos, seguros, etc.) no son gastos bancarios.
 export const CATEGORIAS_GASTO = [
-  { categoria: 'Impuesto al Débito', patron: /(ley\s*25\.?413.*debito)|impuesto al debito/ },
-  { categoria: 'Impuesto al Crédito', patron: /(ley\s*25\.?413.*credito)|impuesto al credito/ },
+  // Acepta abreviaturas y cualquier orden ("Imp. Deb. Ley 25413", "Impuesto Ley 25.413 ... s/Debitos")
+  { categoria: 'Impuesto al Débito', patron: /ley\s*25\.?413.*\bdeb|\bdeb.*ley\s*25\.?413|impuesto al debito/ },
+  { categoria: 'Impuesto al Crédito', patron: /ley\s*25\.?413.*\bcre?d|\bcre?d.*ley\s*25\.?413|impuesto al credito/ },
   { categoria: 'IVA sobre intereses', patron: /iva sobre intereses/ },
   // Credicoop lo llama "IVA - Alicuota Exento"; Santander "Iva 21% reg de transfisc ley 27743"
   { categoria: 'IVA sobre comisiones', patron: /iva sobre comisiones|^iva - alicuota|^iva \d+% reg de transfisc/ },

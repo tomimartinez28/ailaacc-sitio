@@ -23,10 +23,10 @@ export const CUIT = {
   titular: cuit('2711111111'), hija: cuit('2722222222'), iol: '33707852459',
 };
 
-const guardar = (nombre, filas) => {
+const guardar = (nombre, filas, hoja = 'Hoja1') => {
   const wb = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(filas), 'Hoja1');
-  writeFileSync(join(dir, nombre), XLSX.write(wb, { type: 'buffer', bookType: 'xlsx' }));
+  XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(filas), hoja);
+  writeFileSync(join(dir, nombre), XLSX.write(wb, { type: 'buffer', bookType: nombre.endsWith('.xlsm') ? 'xlsm' : 'xlsx' }));
 };
 const serial = (d, m) => Date.UTC(2026, m - 1, d) / 86400000 + 25569;
 const texto = (d, m) => `${String(d).padStart(2, '0')}/${String(m).padStart(2, '0')}/2026`;
@@ -162,6 +162,34 @@ function frances(nombre = 'extracto-frances.xlsx', { filaVaciaArriba = false } =
   ]);
 }
 
+// ---------- Galicia Caja de Ahorro (.xlsm): 5 filas de título, movimiento en varias líneas, débitos en negativo ----------
+// Más nuevo arriba, créditos/débitos en 0 cuando no corresponden y cientos de filas vacías al final.
+function galicia() {
+  const cbu = '0000003100000000000001';
+  const movs = conSaldos(150000, [
+    [1, ' REINTEGRO PROMOCION GALICIA\n Comercio ficticio\n', 5000],
+    [2, ` TRANSFERENCIA DE CUENTA PROPIA\n TITULAR/FICTICIA\n ${CUIT.titular}\n ${cbu}\n VARIOS\n`, 1000000],
+    [2, ' PAGO TARJETA VISA\n OPERACION 0000000001\n', -300000],
+    [5, ' TRANSFERENCIA A TERCEROS\n ACRED.HABERES\n BANCO DE GALICIA Y BUENOS AIRES SAU\n', -400000],
+    [8, ` TRANSFERENCIA DE TERCEROS\n OBRA SOCIAL/FICTICIA UNO\n ${CUIT.osUno}\n ${cbu}\n VARIOS\n 4517XXXXXXXXXX00\n  12345678901\n`, 320000.5],
+    [9, ` TRANSFERENCIA DE TERCEROS\n HIJA FICTICIA\n ${CUIT.hija}\n ${cbu}\n VARIOS\n`, 60000],
+    [12, ' REINTEGRO PROMOCION GALICIA\n Uber\n', 1500],
+    [12, ' ANULACION REINTEGRO PROMO GALICIA\n Uber\n 0000ABCDEF0000000000000000000000\n', -1500],
+    [16, ' INTERES CAPITALIZADO\n Julio 2026\n', 11.12],
+    [20, ` TRANSFERENCIA DE TERCEROS\n PERSONA/FICTICIA\n ${CUIT.persona}\n ${cbu}\n VARIOS\n`, 45000],
+    [25, ` TRANSF. CTAS PROPIAS\n NO  ${CUIT.titular}\n ${cbu}\n LINK\n VARIOS\n`, -200000],
+  ]);
+  const filas = movs.reverse().map(([d, c, imp, s], i) => [texto(d, 7), c, imp < 0 ? imp : 0, imp > 0 ? imp : 0, s, i === 3 ? 'Cargado' : '']);
+  guardar('extracto-galicia.xlsm', [
+    ['Banco Galicia - Caja Ahorro Pesos', '', '', '', '', ''], ['Nro. de Cuenta: ...0000000', '', '', '', '', ''],
+    ['Fecha Actual: 01/08/2026', '', '', '', '', ''], ['Hora Actual: 10:00', '', '', '', '', ''],
+    ['Intervalo de Consulta: del 01/07/2026 al 31/07/2026', '', '', '', '', ''],
+    ['Fecha', 'Movimiento', 'Débito', 'Crédito', 'Saldo Parcial', 'Comentarios'],
+    ...filas,
+    ...Array.from({ length: 200 }, () => ['', '', '', '', '', '']),
+  ], 'Cuentas');
+}
+
 credicoop('extracto-credicoop.xlsx');
 credicoop('extracto-saldo-alterado.xlsx', { romperSaldo: true });
 nbchCA();
@@ -171,4 +199,5 @@ santander();
 santander('extracto-santander-sin-referencia.xlsx', { conReferencia: false, sinSaldoArriba: 2 });
 frances();
 frances('extracto-frances-titulo-corrido.xlsx', { filaVaciaArriba: true });
+galicia();
 console.log('extractos ficticios generados en', dir);

@@ -7,8 +7,9 @@ import { procesarExtracto } from './index.js';
 import { aFecha, aNumero, cuitValido, extraerCuit, huellaCuit, normalizar } from './utilidades.js';
 import { clasificar, verificarSaldos } from './clasificar.js';
 
+// n: nombre sin "extracto-"; si no trae extensión, es .xlsx
 const fixture = (n) => {
-  const b = readFileSync(new URL(`../../../../e2e/fixtures/extracto-${n}.xlsx`, import.meta.url));
+  const b = readFileSync(new URL(`../../../../e2e/fixtures/extracto-${n.includes('.') ? n : `${n}.xlsx`}`, import.meta.url));
   return b.buffer.slice(b.byteOffset, b.byteOffset + b.byteLength);
 };
 // Huellas de los CUIT FICTICIOS de titular e hija que usan los extractos de prueba
@@ -63,6 +64,12 @@ describe('integridad', () => {
     // cronológico: 100 → (+50 sin saldo) → (−20 sin saldo) → 130 → (+5 sin saldo al final)
     expect(verificarSaldos([m(100, 0), m(null, 50), m(null, -20), m(130, 0), m(null, 5)])).toEqual({ estado: 'verificados', sinSaldo: 3 });
     expect(() => verificarSaldos([m(100, 0), m(null, 50), m(131, 0)])).toThrow('Los saldos del extracto no cierran');
+  });
+  it('impuesto Ley 25.413 con abreviaturas y en cualquier orden', async () => {
+    const mov = (concepto) => ({ fecha: new Date(0), concepto, importe: -10, saldo: null });
+    const r = await clasificar(['Imp. Deb. Ley 25413 Gral.', 'Imp. Cred. Ley 25413', 'Impuesto Ley 25.413 Ali Gral s/Debitos',
+      'Impuesto Ley 25.413 Ali Gral s/Creditos', 'IMP LEY 25.413 CRED'].map(mov), 'X');
+    expect(r.gastos.map((g) => g.categoria)).toEqual(['Impuesto al Débito', 'Impuesto al Crédito', 'Impuesto al Débito', 'Impuesto al Crédito', 'Impuesto al Crédito']);
   });
   it('un crédito con concepto de gasto (reintegro) resta del gasto y no es ingreso', async () => {
     const r = await clasificar([{ fecha: new Date(0), concepto: 'Com. mantenimiento cuenta reintegro', importe: 500, saldo: null }], 'X');
@@ -129,6 +136,21 @@ describe('extractos por banco', () => {
     expect(ingresos(r)).toEqual([[7000000.75, '30546741253'], [5000000.25, '30546741253']]);
     expect(gastos(r)).toEqual([]);
     expect(motivos(r)).toEqual(['Intereses de la cuenta']);
+  });
+
+  it('Galicia (.xlsm): movimiento en varias líneas, débitos en negativo, cuenta propia, reintegros e interés capitalizado', async () => {
+    const r = await procesar('galicia.xlsm');
+    expect(r.banco).toBe('Galicia');
+    expect(r.periodo).toBe('01/07/2026 al 25/07/2026');
+    expect(r.estadisticas.movimientos).toBe(11);   // las filas vacías del final no cuentan
+    expect(r.estadisticas.saldos).toBe('verificados');
+    expect(ingresos(r)).toEqual([[320000.5, '30711111111'], [45000, '20333333334']]);
+    expect(gastos(r)).toEqual([]);   // transferencias, haberes, tarjeta y anulación de reintegro no son gastos bancarios
+    expect(motivos(r)).toEqual(['Bonificación o promoción', 'Cuenta propia (titular)', 'Familiar de la titular',
+      'Bonificación o promoción', 'Intereses de la cuenta']);
+    expect(r.reporte.excluidos[1].concepto).toMatch(/^TRANSFERENCIA DE CUENTA PROPIA TITULAR\/FICTICIA 27111111117 /);   // una sola línea
+    const reales = await procesarExtracto(fixture('galicia.xlsm'));
+    expect(motivos(reales)[1]).toBe('Transferencia entre cuentas propias');   // sin la huella, la excluye el concepto
   });
 
   it('formatos alternativos: Santander sin Referencia y sin saldo arriba, NBCH "CUIT Cuenta", Francés con título corrido', async () => {
