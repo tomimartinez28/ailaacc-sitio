@@ -60,9 +60,8 @@ describe('rutas', () => {
     expect(screen.getByRole('link', { name: /Control de horas/ })).toHaveAttribute('href', '/herramientas/control-horas');
   });
 
-  it('una ruta desconocida vuelve al inicio', async () => {
-    window.IntersectionObserver = class { observe() {} disconnect() {} };
+  it('una ruta desconocida lleva al listado de herramientas', async () => {
     const router = ir('/cualquier-cosa');
-    await waitFor(() => expect(router.state.location.pathname).toBe('/'));
+    await waitFor(() => expect(router.state.location.pathname).toBe('/herramientas'));
   });
 });

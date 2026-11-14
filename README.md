@@ -1,27 +1,19 @@
-# Sitio AILAACC
+# Herramientas AILAACC
 
-Sitio de A.I.L.A.A.C.C. (U.E.G.P. N° 195, Chaco) hecho con **React + Vite + React Router**.
+Herramientas internas del personal de A.I.L.A.A.C.C. (U.E.G.P. N° 195, Chaco), hechas con
+**React + Vite + React Router**. Se publican en https://tomimartinez28.github.io/ailaacc-sitio/herramientas.
 
-| Ruta | Para quién | Qué es |
-|---|---|---|
-| `/` | Familias y público | Por ahora redirige a `/herramientas` (ver "Página de inicio") |
-| `/herramientas` | Personal (no se indexa) | Listado de herramientas internas |
-| `/herramientas/control-horas` | Personal | Procesa los reportes del registro dactilar |
-| `/herramientas/extractos-bancarios` | Personal | Reportes de ingresos y gastos bancarios por extracto |
+La landing pública es **otro proyecto** (`ailaacc-landing`, en https://ailaaccuep195.com/); su footer tiene el
+link "Acceso personal · Herramientas" que lleva acá.
+
+| Ruta | Qué es |
+|---|---|
+| `/` | Redirige a `/herramientas` (también cualquier dirección desconocida) |
+| `/herramientas` | Listado de herramientas internas (no se indexa en buscadores) |
+| `/herramientas/control-horas` | Procesa los reportes del registro dactilar |
+| `/herramientas/extractos-bancarios` | Reportes de ingresos y gastos bancarios por extracto |
 
 `/control-horas.html` (dirección de la versión anterior) redirige a la herramienta.
-
-## Página de inicio
-
-La variable `VITE_INICIO` (en `.env` para producción y `.env.development` para `npm run dev`) decide qué se ve en `/`:
-
-| Valor | Resultado |
-|---|---|
-| `herramientas` (actual) | `/` lleva directo a `/herramientas`. La landing no está accesible ni incluida en el build. |
-| `construccion` | Página "Sitio en construcción" con WhatsApp, teléfono y redes. |
-| `landing` | La landing completa. |
-
-Para ver otro modo localmente sin tocar los archivos: `VITE_INICIO=landing npm run dev`.
 
 ## Uso
 
@@ -45,19 +37,17 @@ Los reportes de prueba de `e2e/fixtures/` tienen datos ficticios (`node e2e/fixt
 ## Estructura
 
     src/
-      data/institucion.js      datos compartidos: institución, contacto, WhatsApp, redes, horario
-      data/sitio.js            contenido de la landing: sedes (dirección, teléfono), servicios, textos
+      data/institucion.js      nombre y registro de la institución (marca y footer)
       components/ui/           piezas reutilizables: Button, Icon, SectionHead, Brand
-      components/layout/       headers, footers, botón de WhatsApp, scroll a #anclas
-      layouts/                 SiteLayout (landing) y ToolsLayout (área del personal)
-      features/home/           secciones de la landing; contacto/ tiene el estado del formulario
-      pages/                   Home, "Sitio en construcción", listado de herramientas, página de una herramienta
+      components/layout/       header y footer del área de herramientas
+      layouts/ToolsLayout.jsx  header + herramienta + footer
+      pages/                   listado de herramientas y página de una herramienta
       tools/registro.js        registro de herramientas (se cargan de forma diferida)
       tools/components/        piezas comunes: ToolHero, ProcesadorArchivos, DropZone, ResultList, Nota
       tools/hooks/             useProcesarArchivos (estado de la lista de archivos)
       tools/control-horas/     motor/ (lógica de Excel), resumen.js, leyenda y colores propios
       tools/extractos-bancarios/  reglas.js (qué es ingreso/gasto), motor/ (un lector por banco, clasificación, Excel)
-      styles/                  sitio.css (tokens y componentes) y herramientas.css
+      styles/                  sitio.css (tokens y componentes base, copiados de la landing) y herramientas.css
     e2e/                       tests end-to-end y reportes de prueba
 
 ## Agregar una herramienta

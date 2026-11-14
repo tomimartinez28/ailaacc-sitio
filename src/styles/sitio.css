@@ -1,5 +1,6 @@
-/* Estilos compartidos del sitio AILAACC (landing + herramientas).
-   Tokens de color, tipografía, header, footer y componentes. */
+/* Estilos base de AILAACC: tokens de color, tipografía, header, footer y componentes.
+   Copiado de la landing (proyecto ailaacc-landing) cuando se separaron: todavía incluye estilos de
+   secciones de la landing que acá no se usan. */
 
 /* ============ TOKENS ============
    Paleta tomada del logo: amarillo #ECC719 · verde #97B834 · naranja #C85515.

@@ -2,7 +2,7 @@ import { lazy } from 'react';
 
 // Registro de herramientas del personal. Para sumar una nueva:
 //  1. crear su carpeta en src/tools/<slug>/ con un componente por defecto
-//  2. agregar una entrada acá (se carga de forma diferida: no pesa en la landing)
+//  2. agregar una entrada acá (se carga de forma diferida: no pesa en el listado)
 //     estado: 'Beta' (u otro texto corto) -> se muestra como etiqueta en la tarjeta del listado
 export const HERRAMIENTAS = [
   {
